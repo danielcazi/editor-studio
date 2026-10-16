@@ -1,0 +1,27 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "motion-library",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4180",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "motion-studio/library"
+      ],
+      "port": 4180
+    },
+    {
+      "name": "editor-studio",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "editor-studio/server.js"
+      ],
+      "port": 4173
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biblioteca de Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0b0a; --panel: #141413; --line: #262624; --ink: #f1efe8; --mute: #8d8a80; --dim: #5d5b55;
+  --acc: #e8f23a; --ok: #3ddc6b; --pass: #6d6a63;
+  --serif: 'Instrument Serif', Georgia, serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+:root[data-theme="light"] { --bg: #f5f3ec; --panel: #ebe8df; --line: #d6d2c6; --ink: #1d1c1a; --mute: #6a675f; --dim: #9a968b; --acc: #6d7a00; --ok: #1f8a43; --pass: #9a968b; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 13px/1.5 var(--mono); padding: 40px 16px 80px; }
+main { max-width: 1180px; margin: 0 auto; }
+.kicker { color: var(--mute); letter-spacing: .14em; text-transform: uppercase; font-size: 11px; }
+h1 { font: 400 clamp(44px, 7vw, 84px)/0.95 var(--serif); margin: 14px 0 28px; }
+h1 i { color: var(--acc); }
+h2 { font: 400 30px/1.1 var(--serif); margin: 0 0 18px; display: flex; gap: 14px; align-items: baseline; }
+h2 small { font: 11px var(--mono); color: var(--mute); }
+section { border-top: 1px solid var(--line); padding: 34px 0 10px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 18px; }
+.stat b { display: block; font: 400 46px/1 var(--serif); color: var(--acc); }
+.stat span { color: var(--mute); text-transform: uppercase; letter-spacing: .12em; font-size: 10px; }
+.src { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.box { background: var(--panel); border: 1px solid var(--line); padding: 16px 18px; }
+.box .n { font: 400 24px var(--serif); }
+.box .s { color: var(--mute); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip { border: 1px solid var(--line); background: none; color: var(--mute); font: 11px var(--mono); padding: 5px 11px; border-radius: 99px; cursor: pointer; }
+.chip.on { background: var(--acc); color: #111; border-color: var(--acc); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.card { cursor: pointer; }
+.card .im { aspect-ratio: 9/16; background: var(--panel) center/cover no-repeat; border: 1px solid var(--line); }
+.card.wide { grid-column: span 2; }
+.card.wide .im { aspect-ratio: 16/9; }
+.card:hover .im { border-color: var(--acc); }
+.card .lb { color: var(--mute); font-size: 11px; margin-top: 6px; }
+.card .lb b { color: var(--ink); font-weight: 500; }
+.log { display: grid; gap: 8px; }
+.row { display: grid; grid-template-columns: 170px 1fr 120px; gap: 16px; background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; }
+.row .t { color: var(--acc); }
+.row .ref { color: var(--mute); font-size: 11px; }
+.row q { font-family: var(--serif); font-size: 19px; display: block; margin-bottom: 4px; }
+.row .why { color: var(--mute); font-size: 12px; }
+.stills { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+.stills figure { margin: 0; }
+.stills img { width: 100%; display: block; border: 1px solid var(--line); }
+.stills figure.pick img { border-color: var(--acc); box-shadow: 0 0 0 2px var(--acc); }
+.stills figcaption { font-size: 11px; color: var(--mute); margin-top: 4px; }
+.stills figcaption b { color: var(--ink); font-weight: 500; }
+.st { grid-row: 1; grid-column: 3; width: max-content; justify-self: end; align-self: start; font-size: 11px; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--line); }
+.st.approved, .st.picked { color: var(--acc); border-color: var(--acc); }
+.st.built { color: var(--ok); border-color: var(--ok); }
+.st.passed { color: var(--pass); }
+.loop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--dim); }
+.loop span { border: 1px solid var(--line); padding: 7px 12px; border-radius: 99px; color: var(--ink); }
+.loop span.you { background: var(--acc); color: #111; border-color: var(--acc); }
+.tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.tools .box b { font-weight: 500; }
+.tools .box p { color: var(--mute); font-size: 12px; margin-top: 4px; }
+.tools .box code { color: var(--dim); font-size: 11px; }
+dialog { margin: auto; background: var(--panel); color: var(--ink); border: 1px solid var(--line); padding: 0; max-width: 760px; width: calc(100% - 32px); }
+dialog::backdrop { background: #000a; }
+.dlg { display: grid; grid-template-columns: 240px 1fr; }
+.dlg img { width: 100%; display: block; }
+.dlg.wide { grid-template-columns: 1fr; }
+.dlg .tx { padding: 22px; }
+.dlg h3 { font: 400 32px/1 var(--serif); margin: 6px 0 12px; }
+.dlg p { color: var(--mute); margin-bottom: 10px; }
+.dlg dt { color: var(--dim); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; margin-top: 10px; }
+.dlg button { margin-top: 16px; }
+.foot { color: var(--dim); font-size: 11px; margin-top: 40px; }
+@media (max-width: 640px) {
+  .stills { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .src { grid-template-columns: 1fr; }
+  .row { grid-template-columns: 1fr; gap: 6px; }
+  .st { grid-row: auto; grid-column: auto; justify-self: start; }
+  .dlg { grid-template-columns: 1fr; }
+  .card.wide { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">motion-studio · motion mod</div>
+  <h1>Biblioteca de <i>motion</i></h1>
+  <div class="stats" id="stats"></div>
+
+  <section><h2><small>01</small>De onde vêm as ideias</h2><div class="src" id="src"></div></section>
+  <section><h2><small>02</small>O que já existe</h2><div class="filters" id="filters"></div><div class="grid" id="grid"></div></section>
+  <section><h2><small>03</small>Idea log</h2><div class="log" id="log"></div></section>
+  <section><h2><small>04</small>O loop</h2>
+    <div class="loop">
+      <span>Vídeo, inspo ou pedido</span>→<span>Checa o catálogo</span>→<span>Registra a ideia</span>→<span class="you">Aprova ou passa</span>→<span>3 stills</span>→<span class="you">Escolhe uma</span>→<span>Constrói em código</span>→<span>Confere o render</span>→<span>Entra na biblioteca</span>
+    </div>
+  </section>
+  <section><h2><small>05</small>Ferramentas</h2><div class="tools" id="tools"></div></section>
+  <div class="foot" id="foot"></div>
+</main>
+<dialog id="dlg"></dialog>
+<script>
+const DATA = /*__DATA__*/null;
+const { lib, ideas, thumbs } = DATA;
+const th = id => thumbs[id] || '';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const L = ideas.ideas;
+const built = L.filter(i => i.status === 'built');
+const STATUS = { pending: 'aguardando', approved: 'aprovada', passed: 'passou', stills: 'stills prontos', picked: 'escolhida', built: 'construída' };
+
+$('#stats').innerHTML = [
+  [lib.modules.length, 'peças na biblioteca'],
+  [L.length, 'ideias registradas'],
+  [built.length, 'construídas do log'],
+  [built.filter(i => !i.pick).length, 'construídas sem minha escolha'],
+].map(([n, s]) => `<div class="stat"><b>${n}</b><span>${s}</span></div>`).join('');
+
+const SRC = [['video', 'Vídeos que eu gravo'], ['inspo', 'Inspirações que eu salvo'], ['request', 'Coisas que eu peço']];
+$('#src').innerHTML = SRC.map(([k, s]) => {
+  const n = L.filter(i => i.source?.type === k).length;
+  return `<div class="box"><div class="n">${s}</div><div class="s">${n} ${n === 1 ? 'ideia' : 'ideias'}</div></div>`;
+}).join('');
+
+const styles = ['Todas', ...new Set(lib.modules.map(m => m.style))];
+let cur = 'Todas';
+try { cur = localStorage.getItem('mm.style') || 'Todas'; } catch (e) {}
+if (!styles.includes(cur)) cur = 'Todas';
+function renderGrid() {
+  $('#filters').innerHTML = styles.map(s => `<button class="chip ${s === cur ? 'on' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('');
+  $('#grid').innerHTML = lib.modules.filter(m => cur === 'Todas' || m.style === cur).map(m => {
+    const wide = m.thumb && m.thumb.w > m.thumb.h;
+    return `<div class="card ${wide ? 'wide' : ''}" data-id="${m.id}"><div class="im" style="background-image:url('${th(m.id)}')"></div>
+      <div class="lb">${m.id} <b>${esc(m.name)}</b></div></div>`;
+  }).join('');
+}
+$('#filters').addEventListener('click', e => {
+  const s = e.target.dataset.s; if (!s) return;
+  cur = s; try { localStorage.setItem('mm.style', s); } catch (e) {}
+  renderGrid();
+});
+$('#grid').addEventListener('click', e => {
+  const c = e.target.closest('.card'); if (!c) return;
+  const m = lib.modules.find(x => x.id === c.dataset.id);
+  const wide = m.thumb && m.thumb.w > m.thumb.h;
+  $('#dlg').innerHTML = `<div class="dlg ${wide ? 'wide' : ''}"><img src="${th(m.id)}" alt=""><div class="tx">
+    <div class="kicker">${m.id} · ${esc(m.kind)} · ${esc(m.style)}</div><h3>${esc(m.name)}</h3><p>${esc(m.what)}</p>
+    <dl><dt>O que muda para reusar</dt><dd>${m.vars.map(esc).join(' · ')}</dd>
+    <dt>Código</dt><dd><code>${esc(m.source.film)}/film.js → ${esc(m.source.fn)}</code></dd>
+    <dt>Formatos</dt><dd>${m.formats.join(' · ')} — ${esc(m.reuse)}</dd>
+    <dt>Usado em</dt><dd>${m.uses.map(esc).join(' · ')}</dd></dl>
+    <button class="chip" onclick="dlg.close()">Fechar</button></div></div>`;
+  $('#dlg').showModal();
+});
+renderGrid();
+
+$('#log').innerHTML = L.length ? L.slice().reverse().map(i => `<div class="row">
+  <div><div class="t">${esc(i.title)}</div><div class="ref">${esc(i.source?.ref)} ${esc(i.source?.at || '')}</div>${i.builtAs ? `<div class="ref">→ ${esc(i.builtAs)}</div>` : ''}</div>
+  <div><q>${esc(i.line)}</q><div class="why">${esc(i.catalogCheck)}</div></div>
+  <div class="st ${i.status}">${STATUS[i.status] || i.status}</div>
+  ${(i.stills || []).length ? `<div class="stills">${i.stills.map(o => `<figure class="${[].concat(i.pick || []).includes(o.key) ? 'pick' : ''}"><img src="${th(i.id + '-' + o.key)}" alt=""><figcaption><b>${o.key} · ${esc(o.name)}</b> — ${esc(o.desc)}</figcaption></figure>`).join('')}</div>` : ''}</div>`).join('') : '<div class="box">Nenhuma ideia ainda.</div>';
+
+$('#tools').innerHTML = lib.tools.map(t => `<div class="box"><b>${t.id} ${esc(t.name)}</b><p>${esc(t.what)}</p><code>${esc(t.source)}</code></div>`).join('');
+$('#foot').textContent = 'Gerado em ' + new Date(DATA.builtAt).toLocaleString('pt-BR') + ' · node library/build.mjs';
+</script>
+</body>
+</html>

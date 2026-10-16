@@ -1,0 +1,20 @@
+# dependências e ambiente
+node_modules/
+.venv/
+__pycache__/
+.DS_Store
+
+# vídeos e material pesado: ficam só na máquina
+videos/*
+!videos/.gitkeep
+referencias/*/*
+!referencias/*/.gitkeep
+!referencias/*/*.txt
+referencias/.index/
+arquivo/
+dist/
+motion-studio/library/**/out/
+editor-studio/tools/vision_cutout
+
+# configuração pessoal do Claude Code
+.claude/settings.local.json

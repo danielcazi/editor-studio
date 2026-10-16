@@ -1,0 +1,38 @@
+{
+  "_leia": "Cada encaixe diz qual ferramenta faz aquela parte do fluxo. Para trocar, mude 'tipo'/'cmd'/'skill' do encaixe e mantenha a saída descrita em 'contrato'. Os comandos rodam a partir da raiz do projeto; {nomes} entre chaves são preenchidos na hora. Em 'alternativas' ficam opções prontas para copiar.",
+  "encaixes": {
+    "legenda": {
+      "tipo": "script",
+      "cmd": ".venv/bin/python editor-studio/tools/transcribe.py {audio} {saida}",
+      "contrato": "Entrada: áudio WAV. Saída: JSON { duration, segments: [ { start, end, text, words: [ { w, s, e } ] } ] }. Se o job já tem .srt em briefing.legenda, use o .srt e pule este encaixe.",
+      "alternativas": [
+        { "tipo": "skill", "skill": "embedded-captions", "nota": "skill HyperFrames em motion-studio/.agents/skills; transcreve e já desenha a legenda" },
+        { "tipo": "skill", "skill": "media-use", "nota": "transcrição pelo motor de áudio da HyperFrames" }
+      ]
+    },
+    "recorte": {
+      "tipo": "script",
+      "cmd": ".venv/bin/python editor-studio/tools/cutout.py {entrada} {saida}",
+      "contrato": "Entrada: pasta com quadros PNG. Saída: pasta com PNG RGBA de mesmo nome e tamanho (pessoa com alfa).",
+      "alternativas": [
+        { "tipo": "script", "cmd": "editor-studio/tools/vision_cutout {entrada} {saida} {primeiro} {ultimo}", "nota": "Apple Vision, só macOS, bem mais rápido; compile antes: swiftc -O editor-studio/tools/vision_cutout.swift -o editor-studio/tools/vision_cutout (lê JPG 00001.jpg…)" },
+        { "tipo": "skill", "skill": "media-use", "nota": "remoção de fundo da HyperFrames" }
+      ]
+    },
+    "leitura": {
+      "tipo": "script",
+      "cmd": "ffmpeg -v error -i {video} -vf fps=1,scale=540:-2 {saida}/%03d.jpg",
+      "contrato": "Entrada: vídeo. Saída: quadros JPG numerados para o Claude olhar (6 a 10 bastam na tarefa refs)."
+    },
+    "indice_refs": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/index_refs.mjs",
+      "contrato": "Lê referencias/<edicao|lettering|motion>/*.mp4 e grava referencias/.index/index.json (duração, cortes, sheet.jpg, nota). O servidor roda este encaixe antes da tarefa refs."
+    },
+    "render": {
+      "tipo": "script",
+      "cmd": "node motion-studio/render.mjs {filme} --w 1080 --h 1920",
+      "contrato": "Entrada: pasta do filme HTML (videos/<id>/filme) com window.seek(t). Saída: quadros em <filme>/out/frames."
+    }
+  }
+}

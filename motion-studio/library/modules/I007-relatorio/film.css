@@ -1,0 +1,33 @@
+* { margin: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+:root { --creme: #faf9f5; --sup: #fff; --borda: #e6e3da; --roxo: #6f6fc9; --roxoF: #5857b0; --roxoC: #8f8fdd; --roxoS: #ecebfa;
+  --tinta: #1f1e1d; --tintaS: #55534d; --apag: #7c7a73; --terra: #c4673f; --pele: #f3dccd; }
+#stage { position: absolute; inset: 0; overflow: hidden; font-family: Inter, sans-serif; color: var(--tinta); -webkit-font-smoothing: antialiased; }
+.abs { position: absolute; }
+.h { font-weight: 800; letter-spacing: -.035em; line-height: .92; white-space: pre; }
+.mono { font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+/* página de exemplo (cliente Lumière) */
+.page { position: absolute; background: var(--sup); border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px -30px rgba(31,30,29,.35), 0 0 0 1px var(--borda); }
+.page .nav { position: absolute; left: 44px; top: 30px; right: 44px; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: var(--tintaS); }
+.page .nav b { font-family: Fraunces, serif; font-size: 26px; color: var(--tinta); }
+.page .hero { position: absolute; left: 44px; top: 130px; width: 430px; font-family: Fraunces, serif; font-weight: 600; font-size: 54px; line-height: 1.02; letter-spacing: -.01em; }
+.page .sub { position: absolute; left: 44px; top: 330px; width: 380px; font-size: 17px; line-height: 1.45; color: var(--tintaS); }
+.page .arch { position: absolute; right: 40px; top: 110px; width: 360px; height: 420px; background: var(--pele); border-radius: 180px 180px 18px 18px; }
+.page .bottle { position: absolute; right: 170px; top: 270px; width: 92px; height: 210px; background: var(--terra); border-radius: 14px 14px 10px 10px; }
+.page .bottle::before { content: ''; position: absolute; left: 30px; top: -46px; width: 32px; height: 50px; background: #2b2a28; border-radius: 6px 6px 0 0; }
+.page .leaf { position: absolute; right: 300px; top: 230px; width: 70px; height: 170px; background: #7d8f6a; border-radius: 70px 0 70px 0; transform: rotate(-18deg); }
+.btn { position: absolute; display: flex; align-items: center; justify-content: center; font-weight: 600; white-space: nowrap; border-radius: 999px; }
+.page .btn { background: var(--terra); color: #fff; font-size: 18px; }
+.sel { position: absolute; border: 2px solid var(--roxo); }
+.sel i { position: absolute; width: 12px; height: 12px; background: #fff; border: 2px solid var(--roxo); border-radius: 2px; }
+.sel i:nth-child(1) { left: -7px; top: -7px; } .sel i:nth-child(2) { right: -7px; top: -7px; }
+.sel i:nth-child(3) { left: -7px; bottom: -7px; } .sel i:nth-child(4) { right: -7px; bottom: -7px; }
+.cursor { position: absolute; width: 34px; height: 34px; }
+#bgv { position: absolute; inset: 0; background: center/cover no-repeat; }
+.chip { position: absolute; display: inline-flex; align-items: center; gap: 14px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+.wa { color: #25a85a; }
+.card { position: absolute; background: var(--sup); box-shadow: 0 24px 60px -24px rgba(31,30,29,.45), 0 0 0 1px var(--borda); overflow: hidden; }
+.card { position: absolute; background: var(--sup); box-shadow: 0 30px 70px -24px rgba(0,0,0,.6), 0 0 0 1px var(--borda); overflow: hidden; }
+.topt { position: absolute; left: 0; width: 1080px; text-align: center; font-weight: 800; letter-spacing: -.04em; line-height: .95; color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,.45); white-space: nowrap; }
+.topt .acc { background: var(--roxo); padding: 0 .14em .06em; border-radius: .12em; text-shadow: none; }
+.mono2 { font-family: ui-monospace, 'SF Mono', Menlo, monospace; }

@@ -1,0 +1,404 @@
+<title>Fluxo do Editor Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: uma faixa escura contínua, com trilho de etapas igual ao painel do Editor Studio (mesma identidade). Tema único escuro, por escolha. */
+:root{
+  color-scheme:dark;
+  --bg:#080908; --panel:#101210; --panel2:#171917; --line:#242724;
+  --cream:#f4f1e0; --soft:#b9bbb0; --mute:#8a8d84; --ink:#0c0d0c;
+  --yellow:#f2e600; --green:#3ddc4b; --red:#ff5a4d;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--cream);font-family:var(--sans);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--yellow)}
+:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,7vw,84px);line-height:.95;letter-spacing:-.01em;margin:10px 0 18px;text-wrap:balance}
+h1 em,h2 em{color:var(--yellow)}
+.lead{font-family:var(--serif);font-size:clamp(20px,2.4vw,24px);color:var(--soft);max-width:680px;line-height:1.28;margin:0}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.4vw,46px);line-height:1;margin:0 0 10px;text-wrap:balance}
+h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.1;margin:0}
+p{margin:0}
+.sub{color:var(--soft);max-width:66ch}
+section{padding-top:72px;display:flex;flex-direction:column;gap:28px}
+code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--cream);word-break:break-word}
+
+/* navegação */
+nav.jump{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.jump .in{max-width:1080px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--mute);text-decoration:none}
+.pill:hover{color:var(--cream);border-color:var(--mute)}
+
+/* visão geral: duas fases */
+.phases{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin-top:40px}
+.phase{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.phase .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow)}
+.phase ul{margin:4px 0 0;padding-left:18px;color:var(--soft)}
+.arrow{align-self:center;font-family:var(--mono);color:var(--mute);font-size:20px}
+
+/* passos de instalação */
+.steps{display:grid;gap:12px;counter-reset:s}
+.step{display:grid;grid-template-columns:56px 1fr;gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.step .n{font-family:var(--serif);font-size:40px;line-height:1;color:var(--yellow)}
+.step .body{display:flex;flex-direction:column;gap:10px;min-width:0}
+.cmd{display:flex;align-items:center;gap:10px;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 14px;min-width:0}
+.cmd pre{margin:0;flex:1;min-width:0;overflow-x:auto;font-family:var(--mono);font-size:13px;color:var(--green)}
+.cmd button{flex:none;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--panel2);color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:6px 11px;cursor:pointer}
+.cmd button:hover{color:var(--cream)}
+.cmd button.ok{color:var(--ink);background:var(--green);border-color:var(--green)}
+.hint{font-size:13.5px;color:var(--mute)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:500;background:var(--panel)}
+tr:last-child td{border-bottom:0}
+td:first-child{white-space:nowrap;font-weight:600}
+.opt{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:1px 7px;margin-left:6px;font-weight:400}
+
+/* trilho das etapas */
+.rail{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rail .g{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--cream);text-decoration:none}
+.rail .g b{color:var(--yellow);font-weight:700;margin-right:6px}
+.rail .gate{font-family:var(--mono);font-size:10px;color:var(--mute)}
+
+/* ciclo de cada etapa */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.loop div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;position:relative;min-width:0}
+.loop .who{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.who.voce{color:var(--yellow)} .who.ia{color:var(--green)} .who.srv{color:var(--mute)}
+.loop p{font-size:14px;color:var(--soft)}
+
+/* etapas detalhadas */
+.stages{display:grid;gap:14px}
+.stage{display:grid;grid-template-columns:200px 1fr;gap:24px;border-top:1px solid var(--line);padding-top:22px}
+.stage .head{display:flex;flex-direction:column;gap:8px}
+.stage .num{font-family:var(--mono);font-size:11px;color:var(--yellow);letter-spacing:.1em}
+.stage .model{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:3px 8px;align-self:flex-start}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;min-width:0}
+.cols div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cols .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.cols p{font-size:14.5px;color:var(--soft)}
+
+/* árvore de pastas */
+.tree{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;overflow-x:auto}
+.tree pre{margin:0;font-family:var(--mono);font-size:13px;line-height:1.75;color:var(--soft)}
+.tree .d{color:var(--cream);font-weight:700}
+.tree .c{color:var(--mute)}
+.tree .y{color:var(--yellow)}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.slot{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.slot .name{font-family:var(--mono);font-size:12px;color:var(--yellow)}
+.slot p{font-size:13.5px;color:var(--soft)}
+.note{border-left:3px solid var(--yellow);background:var(--panel);padding:16px 20px;border-radius:0 12px 12px 0;font-family:var(--serif);font-size:21px;line-height:1.3;max-width:780px}
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.04em}
+
+@media (max-width:820px){
+  .phases{grid-template-columns:1fr}
+  .arrow{transform:rotate(90deg);justify-self:center}
+  .loop{grid-template-columns:1fr 1fr}
+  .stage{grid-template-columns:1fr;gap:14px}
+  .cols{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .loop{grid-template-columns:1fr}
+  .step{grid-template-columns:1fr;gap:6px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:64px}
+</style>
+
+<nav class="jump" aria-label="Seções">
+  <div class="in">
+    <a class="pill" href="#instalar">Instalar</a>
+    <a class="pill" href="#referencias">Referências</a>
+    <a class="pill" href="#usar">Usar</a>
+    <a class="pill" href="#etapas">Etapas</a>
+    <a class="pill" href="#pastas">Pastas</a>
+    <a class="pill" href="#ferramentas">Ferramentas</a>
+    <a class="pill" href="#problemas">Se algo falhar</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Editor Studio · Ínsula</div>
+    <h1>Da instalação ao <em>vídeo final</em></h1>
+    <p class="lead">Você envia o vídeo e o briefing, o Claude propõe e você aprova cada etapa antes de ele seguir. Esta página mostra o caminho inteiro, da máquina nova ao <code>final.mp4</code>.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <span class="when">Uma vez por computador</span>
+        <h3>Preparar a máquina</h3>
+        <ul>
+          <li>Instalar os programas e fazer login no Claude</li>
+          <li>Rodar <code>install.sh</code> e <code>doctor.sh</code></li>
+          <li>Colocar suas referências favoritas em <code>referencias/</code></li>
+        </ul>
+      </div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="phase">
+        <span class="when">A cada vídeo novo</span>
+        <h3>Editar com aprovação</h3>
+        <ul>
+          <li>Abrir o painel com <code>start.sh</code></li>
+          <li>Criar o vídeo, mandar o MP4, a legenda e o briefing</li>
+          <li>Aprovar 5 etapas até a entrega</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== INSTALAR ===================== -->
+  <section id="instalar">
+    <div>
+      <div class="eyebrow">Parte 1 · uma vez</div>
+      <h2>Instalar</h2>
+      <p class="sub">Testado no macOS. No Linux deve funcionar (os caminhos do Chrome são detectados). Windows ainda não foi testado.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="body">
+          <h3>Instale os programas</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Programa</th><th>Para quê</th><th>Como instalar</th></tr></thead>
+              <tbody>
+                <tr><td>Claude Code</td><td>Abre uma conversa por vídeo e faz o trabalho de cada etapa</td><td>claude.com/claude-code, depois rode <code>claude</code> uma vez e faça login</td></tr>
+                <tr><td>Node.js 18+</td><td>Servidor, render e ferramentas</td><td><code>brew install node</code></td></tr>
+                <tr><td>Python 3.10+</td><td>Áudio, transcrição, recorte e stills</td><td><code>brew install python</code></td></tr>
+                <tr><td>ffmpeg</td><td>Cortar, ler, mixar e codificar vídeo</td><td><code>brew install ffmpeg</code></td></tr>
+                <tr><td>Google Chrome</td><td>Desenha stills e quadros</td><td>google.com/chrome</td></tr>
+                <tr><td>After Effects<span class="opt">opcional</span></td><td>Entrega o <code>.aep</code> em camadas. Só no macOS</td><td>Sem ele, o vídeo sai em MP4</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">Sem Homebrew? Instale antes em brew.sh. Para o After usar os textos nativos, instale a fonte Inter no sistema.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">2</div>
+        <div class="body">
+          <h3>Baixe o projeto</h3>
+          <p class="sub">Clone o repositório do GitHub e entre na pasta.</p>
+          <div class="cmd"><pre>git clone &lt;URL do repositório&gt; videos-claude</pre><button type="button" data-copy>Copiar</button></div>
+          <div class="cmd"><pre>cd videos-claude</pre><button type="button" data-copy>Copiar</button></div>
+          <p class="hint">Sem git? Use o zip <code>insula-edit-kit</code>: descompacte e entre na pasta. Para atualizar uma máquina já instalada, rode <code>git pull</code>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">3</div>
+        <div class="body">
+          <h3>Rode o instalador</h3>
+          <div class="cmd"><pre>bash install.sh</pre><button type="button" data-copy>Copiar</button></div>
+          <div class="cmd"><pre>bash install.sh --leve</pre><button type="button" data-copy>Copiar</button></div>
+          <p class="sub">O completo ocupa cerca de 1,5 GB, porque inclui a transcrição (faster-whisper) e o recorte de pessoa (rembg). Use <code>--leve</code> se seus vídeos sempre chegam com <code>.srt</code> e você não recorta a pessoa.</p>
+          <p class="hint">O que ele faz: confere os programas → instala as dependências de Node do editor e do motion → baixa o navegador do render → cria o ambiente Python → cria <code>videos/</code> e <code>referencias/</code> → roda o diagnóstico.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">4</div>
+        <div class="body">
+          <h3>Confira com o diagnóstico</h3>
+          <div class="cmd"><pre>bash doctor.sh --claude</pre><button type="button" data-copy>Copiar</button></div>
+          <p class="sub">Verde é pronto, amarelo é opcional, vermelho é obrigatório. O <code>--claude</code> também testa o login com uma pergunta curta. No fim aparece a lista de ferramentas de <code>ferramentas.json</code>, para confirmar que cada uma foi encontrada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REFERÊNCIAS ===================== -->
+  <section id="referencias">
+    <div>
+      <div class="eyebrow">Parte 1 · uma vez (e sempre que quiser)</div>
+      <h2>Monte seu banco de <em>referências</em></h2>
+      <p class="sub">É daqui que o sistema tira o seu gosto. Na etapa de referências, o Claude lê o índice dessa pasta antes de propor qualquer coisa.</p>
+    </div>
+    <div class="cols">
+      <div><span class="k">Onde</span><p>Solte arquivos MP4 em <code>referencias/edicao</code>, <code>referencias/lettering</code> ou <code>referencias/motion</code>, conforme o que você gosta naquele vídeo.</p></div>
+      <div><span class="k">Por que gosta</span><p>Ao lado do vídeo, um <code>.txt</code> com o mesmo nome e uma ou duas linhas. Exemplo: <code>corte-seco.mp4</code> + <code>corte-seco.txt</code>.</p></div>
+      <div><span class="k">Índice</span><p>Antes de cada etapa de referências, o servidor gera em <code>.index/</code> uma folha de contato, os cortes por minuto e a duração. A IA lê só o índice, que é leve.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== USAR ===================== -->
+  <section id="usar">
+    <div>
+      <div class="eyebrow">Parte 2 · a cada vídeo</div>
+      <h2>Abrir o painel</h2>
+    </div>
+    <div class="cmd"><pre>bash start.sh</pre><button type="button" data-copy>Copiar</button></div>
+    <p class="sub">O painel abre em <code>http://localhost:4173</code> (http, não https). Crie o vídeo com <b>+</b> na lateral: o sistema cria a pasta <code>videos/&lt;nome-do-video&gt;/</code>, e tudo daquele vídeo fica nela.</p>
+
+    <div>
+      <h3 style="margin-bottom:14px">O que acontece em toda etapa</h3>
+      <div class="loop">
+        <div><span class="who voce">Você</span><p>Aprova a etapa atual no painel ou pede uma nova rodada com uma nota.</p></div>
+        <div><span class="who srv">Servidor</span><p>Grava a tarefa no <code>job.json</code> e abre a conversa do Claude daquele vídeo. Da segunda etapa em diante, ele retoma a mesma conversa.</p></div>
+        <div><span class="who ia">Claude</span><p>Lê o <code>WORKFLOW.md</code>, faz só aquela tarefa, grava o resultado no <code>job.json</code> e libera a vez.</p></div>
+        <div><span class="who voce">Você</span><p>O painel mostra o resultado sozinho. Você escolhe, comenta e aprova, e o ciclo recomeça.</p></div>
+      </div>
+      <p class="hint" style="margin-top:12px">O Claude nunca avança sozinho: só você muda de etapa. Ele também não gasta créditos de serviços pagos (Artlist e semelhantes) sem sua aprovação.</p>
+    </div>
+  </section>
+
+  <!-- ===================== ETAPAS ===================== -->
+  <section id="etapas">
+    <div>
+      <div class="eyebrow">Parte 2 · as seis etapas</div>
+      <h2>Do envio ao <em>vídeo</em></h2>
+    </div>
+
+    <div class="rail" aria-label="Sequência de etapas">
+      <a class="g" href="#e1"><b>01</b>Envio</a><span class="gate">você aprova →</span>
+      <a class="g" href="#e2"><b>02</b>Banco de ref</a><span class="gate">→</span>
+      <a class="g" href="#e3"><b>03</b>Devolutiva</a><span class="gate">→</span>
+      <a class="g" href="#e4"><b>04</b>Stills</a><span class="gate">→</span>
+      <a class="g" href="#e5"><b>05</b>Storyboard</a><span class="gate">→</span>
+      <a class="g" href="#e6"><b>06</b>Vídeo</a>
+    </div>
+
+    <div class="stages">
+      <article class="stage" id="e1">
+        <div class="head"><span class="num">01</span><h3>Envio</h3><span class="model">Só você</span></div>
+        <div class="cols">
+          <div><span class="k">Você faz</span><p>Sobe o MP4 já cortado, a legenda <code>.srt</code> (se tiver), a trilha (opcional) e escreve o briefing: o que quer, o que destacar, o que evitar.</p></div>
+          <div><span class="k">O sistema faz</span><p>Guarda tudo em <code>uploads/</code>. Quando você envia, ele indexa o banco de referências.</p></div>
+          <div><span class="k">Gera</span><p><code>videos/&lt;nome&gt;/uploads/</code> e <code>job.json</code></p></div>
+        </div>
+      </article>
+
+      <article class="stage" id="e2">
+        <div class="head"><span class="num">02</span><h3>Banco de ref</h3><span class="model">Sonnet 5.5</span></div>
+        <div class="cols">
+          <div><span class="k">A IA propõe</span><p>Olha de 6 a 10 quadros do vídeo e traz até 3 opções por eixo (edição, lettering, motion), vindas das suas referências ou da biblioteca de motion, com uma marcada como sugestão.</p></div>
+          <div><span class="k">Você decide</span><p>Escolhe uma opção por eixo ou sobe a sua referência. Se nada servir, peça nova rodada com uma nota.</p></div>
+          <div><span class="k">Gera</span><p>Miniaturas <code>out/ref-*.jpg</code></p></div>
+        </div>
+      </article>
+
+      <article class="stage" id="e3">
+        <div class="head"><span class="num">03</span><h3>Devolutiva</h3><span class="model">Sonnet 5.5</span></div>
+        <div class="cols">
+          <div><span class="k">A IA propõe</span><p>Um resumo, a definição de cada eixo e uma linha por momento do vídeo (em geral de 8 a 12 por minuto): a frase, o que entra na tela e qual peça usar. Ela reaproveita módulos da biblioteca e propõe no máximo 3 peças novas.</p></div>
+          <div><span class="k">Você decide</span><p>Aprova ou passa cada linha e deixa notas. Na nova rodada, o que você não pediu para mudar continua igual.</p></div>
+          <div><span class="k">Usa</span><p>O <code>.srt</code> enviado ou, sem ele, o encaixe <code>legenda</code> (transcrição com tempo por palavra)</p></div>
+        </div>
+      </article>
+
+      <article class="stage" id="e4">
+        <div class="head"><span class="num">04</span><h3>Stills</h3><span class="model">Sonnet 5.5 · só se houver peça nova</span></div>
+        <div class="cols">
+          <div><span class="k">A IA propõe</span><p>Para cada peça nova aprovada, 3 direções realmente diferentes em imagem parada, já na referência escolhida e dentro da área segura do 9:16.</p></div>
+          <div><span class="k">Você decide</span><p>Escolhe uma direção (A, B ou C) por peça e comenta o que ajustar.</p></div>
+          <div><span class="k">Gera</span><p><code>out/still-*.jpg</code>. A peça vira módulo reutilizável na biblioteca.</p></div>
+        </div>
+      </article>
+
+      <article class="stage" id="e5">
+        <div class="head"><span class="num">05</span><h3>Storyboard</h3><span class="model">Sonnet 5.5</span></div>
+        <div class="cols">
+          <div><span class="k">A IA propõe</span><p>Monta o filme em <code>filme/</code> (vídeo base, peças da biblioteca e peças novas) e renderiza um quadro por momento aprovado, mais o primeiro e o último. Antes de mostrar, ela dá nota ao conjunto e corrige.</p></div>
+          <div><span class="k">Você decide</span><p>Marca os quadros que quer mudar, com uma nota em cada, ou clica em <b>Pode renderizar</b>. Na rodada de ajuste, ela refaz só o que foi marcado.</p></div>
+          <div><span class="k">Usa / gera</span><p>O encaixe <code>recorte</code> se precisar separar a pessoa · <code>out/sb-*.jpg</code></p></div>
+        </div>
+      </article>
+
+      <article class="stage" id="e6">
+        <div class="head"><span class="num">06</span><h3>Vídeo</h3><span class="model">Opus 5.5 · esforço médio</span></div>
+        <div class="cols">
+          <div><span class="k">A IA entrega</span><p>Exporta as camadas, monta a comp no After Effects (com textos nativos sempre que possível) e renderiza. Sem After, o MP4 sai pelo render do projeto. Áudio: voz, trilha abaixo da voz e efeitos sonoros, em -14 LUFS.</p></div>
+          <div><span class="k">Você decide</span><p>Assiste e baixa. Ajustes depois da entrega: escreva por minutagem (por exemplo, "0:12 texto entra cedo") e só aqueles trechos são refeitos.</p></div>
+          <div><span class="k">Gera</span><p><code>out/final.mp4</code> e, com After, <code>out/&lt;nome&gt;.aep</code></p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== PASTAS ===================== -->
+  <section id="pastas">
+    <div>
+      <div class="eyebrow">Onde fica cada coisa</div>
+      <h2>Mapa das <em>pastas</em></h2>
+      <p class="sub">Código, vídeos e referências ficam separados. Vídeos e referências não vão para o GitHub: ficam só na sua máquina.</p>
+    </div>
+    <div class="tree"><pre><span class="d">pasta do projeto/</span>
+├─ <span class="y">install.sh · doctor.sh · start.sh</span>   <span class="c">instalar, diagnosticar, abrir o painel</span>
+├─ <span class="y">ferramentas.json</span>                   <span class="c">qual ferramenta faz legenda, recorte, leitura…</span>
+├─ <span class="d">videos/</span>
+│  └─ <span class="d">&lt;nome-do-video&gt;/</span>                <span class="c">um vídeo por pasta</span>
+│     ├─ job.json                       <span class="c">estado e escolhas de cada etapa</span>
+│     ├─ uploads/                       <span class="c">o que você mandou</span>
+│     ├─ out/                           <span class="c">stills, storyboard, final.mp4, .aep</span>
+│     ├─ filme/                         <span class="c">o filme em HTML e o material de trabalho</span>
+│     └─ ai.log                         <span class="c">o que a conversa do Claude fez</span>
+├─ <span class="d">referencias/</span>                       <span class="c">seu banco: edicao/ lettering/ motion/</span>
+├─ <span class="d">editor-studio/</span>                     <span class="c">painel, servidor, WORKFLOW.md, tools/</span>
+├─ <span class="d">motion-studio/</span>                     <span class="c">motor de render, biblioteca de módulos, skills</span>
+└─ <span class="d">arquivo/</span>                           <span class="c">material antigo (fora do git)</span></pre></div>
+  </section>
+
+  <!-- ===================== FERRAMENTAS ===================== -->
+  <section id="ferramentas">
+    <div>
+      <div class="eyebrow">Trocar uma peça do fluxo</div>
+      <h2>Encaixes em <em>ferramentas.json</em></h2>
+      <p class="sub">Cada parte técnica do fluxo é um encaixe com entrada e saída fixas. Se aparecer uma skill ou um script melhor, troque o encaixe e o resto do fluxo continua igual. Depois rode <code>bash doctor.sh</code> para conferir.</p>
+    </div>
+    <div class="slots">
+      <div class="slot"><span class="name">legenda</span><p>Hoje: faster-whisper. Entrega o texto com tempo por palavra. Alternativas prontas: skills <code>embedded-captions</code> e <code>media-use</code>.</p></div>
+      <div class="slot"><span class="name">recorte</span><p>Hoje: rembg. Entrega PNG com fundo transparente. Alternativa: Apple Vision (só no macOS, mais rápido).</p></div>
+      <div class="slot"><span class="name">leitura</span><p>Hoje: ffmpeg. Tira quadros do vídeo para o Claude olhar.</p></div>
+      <div class="slot"><span class="name">indice_refs</span><p>Indexa <code>referencias/</code>. Roda sozinho antes da etapa 02.</p></div>
+      <div class="slot"><span class="name">render</span><p>Transforma o filme em HTML em quadros e MP4.</p></div>
+    </div>
+    <p class="note">Para trocar a legenda por uma skill, por exemplo, mude o encaixe para <code>"tipo": "skill", "skill": "embedded-captions"</code>. O WORKFLOW não muda.</p>
+  </section>
+
+  <!-- ===================== PROBLEMAS ===================== -->
+  <section id="problemas">
+    <div>
+      <div class="eyebrow">Diagnóstico rápido</div>
+      <h2>Se algo falhar</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sintoma</th><th>O que fazer</th></tr></thead>
+        <tbody>
+          <tr><td>"Claude Code não encontrado"</td><td>O comando <code>claude</code> não está no PATH. Instale-o ou suba o painel com <code>CLAUDE_BIN=/caminho/claude bash start.sh</code>.</td></tr>
+          <tr><td>A conversa abre e termina com erro</td><td>Rode <code>claude</code> uma vez no terminal e faça login. Os detalhes ficam em <code>videos/&lt;nome&gt;/ai.log</code>.</td></tr>
+          <tr><td>Porta 4173 ocupada</td><td>Já existe um painel aberto. Feche-o ou use <code>PORT=4180 bash start.sh</code>.</td></tr>
+          <tr><td>"Chrome não encontrado"</td><td>Instale o Chrome ou defina <code>CHROME_PATH</code>.</td></tr>
+          <tr><td>Vídeo com fonte errada</td><td>Falta internet (Google Fonts) ou a fonte Inter não está instalada.</td></tr>
+          <tr><td>Sem <code>.aep</code></td><td>O After Effects não está instalado ou o sistema não é macOS. O MP4 sai normalmente.</td></tr>
+          <tr><td>Quer rodar uma etapa à mão</td><td>Suba com <code>AUTO_AI=0 bash start.sh</code>: o painel mostra o comando para colar no Claude.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>Editor Studio · fluxo com aprovação a cada etapa · contrato completo em editor-studio/WORKFLOW.md</footer>
+</div>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach((b) => {
+  b.addEventListener('click', () => {
+    const pre = b.parentElement.querySelector('pre');
+    const done = () => { b.textContent = 'Copiado'; b.classList.add('ok'); setTimeout(() => { b.textContent = 'Copiar'; b.classList.remove('ok'); }, 1400); };
+    const select = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(pre.textContent).then(done, select); } catch (e) { select(); }
+  });
+});
+</script>

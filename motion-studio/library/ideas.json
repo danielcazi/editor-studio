@@ -1,0 +1,501 @@
+{
+  "about": "Idea log do motion mod. Toda ideia nasce aqui com a fala exata e o motivo de nada no catálogo servir. Status: pending → approved | passed → stills → picked → built. Nada é construído sem 'pick'.",
+  "ideas": [
+    {
+      "id": "I001",
+      "title": "Pixel Rulers",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "Ínsula Build 45s",
+        "at": "0:18",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "Arraste. Ajuste.",
+      "catalogCheck": "M04 mostra a precisão só num chip pequeno (X 813 · Y 371); M14 é 9:16 com a pessoa na frente. Nenhum faz a régua e a mira serem o herói do plano.",
+      "why": "Uma régua cheia com mira e coordenadas grandes torna o 'pixel a pixel' a coisa que se vê.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Mira",
+          "desc": "Creme, réguas na borda da página e mira tracejada atravessando a tela; X/Y gigantes à esquerda.",
+          "file": "modules/I001-pixel-rulers/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Lupa",
+          "desc": "Fundo noite, página à esquerda e uma lupa enorme mostrando o canto do botão encaixando no pixel.",
+          "file": "modules/I001-pixel-rulers/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Cotas",
+          "desc": "Roxo chapado, só o botão, com linhas de cota e os números 813 / 371 gigantes.",
+          "file": "modules/I001-pixel-rulers/still-C.jpg"
+        }
+      ],
+      "pick": "B",
+      "builtAs": "M24",
+      "module": "modules/I001-pixel-rulers"
+    },
+    {
+      "id": "I002",
+      "title": "Responsive Morph",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "Ínsula Build 45s",
+        "at": "0:30",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "(sem fala) Desktop · Laptop · Tablet · Celular",
+      "catalogCheck": "M06 troca de dispositivo, mas o mockup ocupa 15% da tela e some em 1 beat.",
+      "why": "Um morph grande da mesma página nos quatro tamanhos faz a promessa 'automático' ser lida.",
+      "status": "pending",
+      "note": "",
+      "stills": [],
+      "pick": null,
+      "builtAs": null
+    },
+    {
+      "id": "I003",
+      "title": "Zero to Live",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "Ínsula Build 45s",
+        "at": "0:36",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "Do zero ao ar em minutos.",
+      "catalogCheck": "M07 diz a frase e carrega a página, mas nada mede tempo.",
+      "why": "Uma linha do prompt ao 'No ar' com marcos de tempo prova o 'minutos' em vez de só dizê-lo.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Linha do tempo",
+          "desc": "Creme, trilho com 5 marcos no tempo real e a miniatura de cada etapa ligada ao seu ponto.",
+          "file": "modules/I003-zero-to-live/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Cronômetro",
+          "desc": "Fundo noite, relógio 3:58 gigante, barra de etapas proporcional e o site no ar ao lado.",
+          "file": "modules/I003-zero-to-live/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Pilha",
+          "desc": "Roxo forte, \"4 min\" gigante e três cartões em leque (prompt, página, no ar) com carimbo de tempo.",
+          "file": "modules/I003-zero-to-live/still-C.jpg"
+        }
+      ],
+      "pick": "B",
+      "builtAs": "M25",
+      "module": "modules/I003-zero-to-live"
+    },
+    {
+      "id": "I004",
+      "title": "Fuga em segundos",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX",
+        "at": "0:07",
+        "file": "Build-01/04 - CAZI S-EFX.mp4"
+      },
+      "line": "Abre o seu site e não acha o que procura em segundos. Fecha e vai para o próximo da lista.",
+      "catalogCheck": "M11 mostra uma página parada e M25 conta minutos de ganho; nada mostra a perda: alguém procurando, o relógio de poucos segundos e a aba fechando.",
+      "why": "Transforma o paciente invisível em uma cena: busca, rola sem achar, 3 s, fecha, próximo resultado. O espectador sente o erro.",
+      "status": "passed",
+      "note": "",
+      "stills": [],
+      "pick": null,
+      "builtAs": null
+    },
+    {
+      "id": "I005",
+      "title": "Painel no escuro",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX",
+        "at": "0:15 e 0:33",
+        "file": "Build-01/04 - CAZI S-EFX.mp4"
+      },
+      "line": "É não saber quem entrou, de onde veio e quem clicou no seu WhatsApp. Sem isso, você fica no escuro.",
+      "catalogCheck": "M05 conta números já conhecidos; nenhum módulo tem o estado 'não sei' (?) que depois acende com o dado real.",
+      "why": "Um painel com 3 cartões apagados com '?' no problema (0:15) e o mesmo painel acendendo com visitas, origem e cliques no WhatsApp na solução (0:33). A promessa paga o problema na tela.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Cartões",
+          "desc": "Sobre o vídeo: três cartões no peito; escuros com \"?\" no problema, creme com o número na solução.",
+          "file": "modules/I005-painel-no-escuro/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Painel",
+          "desc": "Corte de tela cheia: painel de dados em fundo noite, só contorno e \"?\" no escuro, gráfico roxo aceso com GA4.",
+          "file": "modules/I005-painel-no-escuro/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Lanterna",
+          "desc": "O próprio vídeo escurece; perguntas em contorno viram respostas cheias quando a luz volta.",
+          "file": "modules/I005-painel-no-escuro/still-C.jpg"
+        }
+      ],
+      "pick": "A",
+      "builtAs": "M26",
+      "module": "modules/I005-painel-no-escuro"
+    },
+    {
+      "id": "I006",
+      "title": "Três páginas que o Google lê",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX",
+        "at": "0:24",
+        "file": "Build-01/04 - CAZI S-EFX.mp4"
+      },
+      "line": "São três páginas com SEO expandido para o Google entender o que você faz, trata e onde atende.",
+      "catalogCheck": "M03 mostra uma página se montando em camadas (é sobre gerar), não sobre ser lida; nada mostra o Google lendo e marcando o conteúdo.",
+      "why": "Três páginas em leque, cada uma com um trecho grifado (o que faz, o que trata, onde atende) e uma lupa do Google passando por elas.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Leque",
+          "desc": "Tela cheia creme: três páginas escalonadas, trecho grifado em cada uma e a etiqueta do que o Google entende.",
+          "file": "modules/I006-tres-paginas/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Resultado",
+          "desc": "Sobre o vídeo: a busca \"dentista em pinheiros\" e o resultado do site com as três páginas como links.",
+          "file": "modules/I006-tres-paginas/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Raio-x",
+          "desc": "Tela cheia noite: a página em esqueleto com <h1>, <ul> e <address> etiquetados, atravessada pela varredura.",
+          "file": "modules/I006-tres-paginas/still-C.jpg"
+        }
+      ],
+      "pick": "B",
+      "builtAs": "M27",
+      "module": "modules/I006-tres-paginas"
+    },
+    {
+      "id": "I007",
+      "title": "Relatório sem a linha que importa",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX (plano PRO)",
+        "at": "0:02",
+        "job": "editor-studio/data/jobs/04-cazi-s-efx-plano-pro-mv9xfoti"
+      },
+      "line": "e não aparece em nenhum relatório",
+      "catalogCheck": "M26 mostra três perguntas sem resposta e já entra em 0:15 e 0:33; M05 conta números conhecidos. Nenhum mostra um relatório que existe, está cheio, e mesmo assim não tem a linha do paciente perdido.",
+      "why": "O erro “invisível” vira uma linha vazia num relatório de verdade: o espectador vê que o dono olha os números e mesmo assim não enxerga quem desistiu.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Planilha",
+          "desc": "Relatório cheio no peito; a última linha, “pacientes que desistiram”, está vazia e tracejada em roxo.",
+          "file": "modules/I007-relatorio/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Busca no relatório",
+          "desc": "O dono procura “pacientes perdidos” no relatório e a busca devolve 0 resultados.",
+          "file": "modules/I007-relatorio/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Recibo",
+          "desc": "O relatório sai como um recibo impresso; os totais estão lá e a última linha fica em “???”, com selo “não medido”.",
+          "file": "modules/I007-relatorio/still-C.jpg"
+        }
+      ],
+      "pick": "B",
+      "builtAs": "M28",
+      "module": "modules/I007-relatorio"
+    },
+    {
+      "id": "I008",
+      "title": "Busca ao vivo no fundo da marca",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX (job demo-achilles)",
+        "at": "0:04",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "alguém digita \"dentista perto de mim\", \"psicólogo em Pinheiros\"",
+      "catalogCheck": "M02 digita um prompt e M27 mostra o resultado por cima do vídeo; nenhum troca o fundo pela marca com a pessoa recortada e duas buscas seguidas.",
+      "why": "Fundo vira o creme pontilhado do Build, a pessoa recortada recua para 78% e duas buscas são digitadas no ritmo da fala, sob o título \"perto de mim.\"",
+      "status": "built",
+      "note": "Look escolhido nos stills do editor-studio (i1); construído no filme demo-achilles-mv9tpirj como M28.",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Atrás",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i1-A.png"
+        },
+        {
+          "key": "B",
+          "name": "Card",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i1-B.png"
+        },
+        {
+          "key": "C",
+          "name": "Marca",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i1-C.png"
+        }
+      ],
+      "module": "M28"
+    },
+    {
+      "id": "I009",
+      "title": "Lista que pula pro próximo",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX (job demo-achilles)",
+        "at": "0:07",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "abre o seu site e não acha o que procura, em segundos fecha e vai pro próximo da lista",
+      "catalogCheck": "M27 mostra o seu resultado ganhando; nada mostra o paciente desistindo do seu site e indo pro próximo.",
+      "why": "Card de resultados no peito: o seu site acende, falha com ✕, o destaque pula pro concorrente e sobe o selo \"−1 paciente\".",
+      "status": "built",
+      "note": "Look escolhido nos stills do editor-studio (i2); construído no filme demo-achilles-mv9tpirj como M29.",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Atrás",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i2-A.png"
+        },
+        {
+          "key": "B",
+          "name": "Card",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i2-B.png"
+        },
+        {
+          "key": "C",
+          "name": "Marca",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i2-C.png"
+        }
+      ],
+      "module": "M29"
+    },
+    {
+      "id": "I010",
+      "title": "Perguntas no escuro",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX (job demo-achilles)",
+        "at": "0:15",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "não saber quem entrou, de onde veio e quem clicou no seu WhatsApp — você fica no escuro",
+      "catalogCheck": "M26 escurece o vídeo com painel; aqui o fundo é trocado e a pessoa fica isolada, sem painel.",
+      "why": "Fundo noite, pessoa recortada; três perguntas sobem uma a uma e apagam quando o título \"no escuro.\" entra.",
+      "status": "built",
+      "note": "Look escolhido nos stills do editor-studio (i3); construído no filme demo-achilles-mv9tpirj como M30.",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Atrás",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i3-A.png"
+        },
+        {
+          "key": "B",
+          "name": "Card",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i3-B.png"
+        },
+        {
+          "key": "C",
+          "name": "Marca",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i3-C.png"
+        }
+      ],
+      "module": "M30"
+    },
+    {
+      "id": "I011",
+      "title": "Três páginas no editor",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX (job demo-achilles)",
+        "at": "0:25",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "são três páginas com SEO expandido pro Google entender o que você faz, trata e onde atende",
+      "catalogCheck": "M27 mostra as páginas como resultado do Google; aqui elas são blocos do editor com alças (pixel a pixel).",
+      "why": "Fundo da marca, três páginas sobem em leque, a do meio ganha as alças do editor e cada rótulo acende com a fala.",
+      "status": "built",
+      "note": "Look escolhido nos stills do editor-studio (i4); construído no filme demo-achilles-mv9tpirj como M31.",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Atrás",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i4-A.png"
+        },
+        {
+          "key": "B",
+          "name": "Card",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i4-B.png"
+        },
+        {
+          "key": "C",
+          "name": "Marca",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i4-C.png"
+        }
+      ],
+      "module": "M31"
+    },
+    {
+      "id": "I012",
+      "title": "Painel de integrações",
+      "date": "2026-10-15",
+      "source": {
+        "type": "video",
+        "ref": "04 - CAZI S-EFX (job demo-achilles)",
+        "at": "0:30",
+        "job": "editor-studio/data/jobs/demo-achilles-mv9tpirj"
+      },
+      "line": "integrado com seu WhatsApp e o seu CRM, com GA4 e eventos — você vê quantas pessoas visitaram, de onde vieram e quantas clicaram",
+      "catalogCheck": "M17 liga ícones ao site e M05 conta números soltos; nenhum junta integração e resultado num painel só.",
+      "why": "Card no peito com ícones WhatsApp, CRM e GA4 entrando conforme a fala e três números que sobem (visitas, origem, cliques).",
+      "status": "built",
+      "note": "Look escolhido nos stills do editor-studio (i5); construído no filme demo-achilles-mv9tpirj como M32.",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Atrás",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i5-A.png"
+        },
+        {
+          "key": "B",
+          "name": "Card",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i5-B.png"
+        },
+        {
+          "key": "C",
+          "name": "Marca",
+          "desc": "",
+          "file": "../../editor-studio/data/jobs/demo-achilles-mv9tpirj/out/still916-i5-C.png"
+        }
+      ],
+      "module": "M32"
+    },
+    {
+      "id": "I013",
+      "title": "Connect rate no Gerenciador",
+      "date": "2026-10-16",
+      "source": {
+        "type": "video",
+        "ref": "Ads 03 v1-corte",
+        "at": "0:00",
+        "job": "editor-studio/data/jobs/ads-03-mvab2akf"
+      },
+      "line": "Como está o connect rate da sua página?",
+      "catalogCheck": "M26 tem o painel de cartões com número que sobe, mas nunca com colunas de Gerenciador de Anúncios (cliques no link x visitas à página); M28 é relatório sem a taxa. Nada mostra a queda entre clique e carregamento.",
+      "why": "Hook de 0–1 s: tabela estilo Gerenciador com Cliques no link, Visualizações da página e Connect rate em destaque, para o espectador reconhecer a métrica na hora.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Tabela no peito",
+          "desc": "Sobre o vídeo: título connect rate no topo e três linhas estilo Gerenciador; a última acende em roxo com 61,2%.",
+          "file": "modules/I013-connect-rate/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Funil de perda",
+          "desc": "Fundo noite: barra de 1.000 cliques, barra de 612 visualizações e o pedaço perdido em terracota; 61,2% gigante.",
+          "file": "modules/I013-connect-rate/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Coluna em destaque",
+          "desc": "Tela cheia creme: linha da tabela com a coluna Connect rate destacada e o número gigante em roxo.",
+          "file": "modules/I013-connect-rate/still-C.jpg"
+        }
+      ],
+      "pick": "A",
+      "builtAs": "M33",
+      "module": "modules/I013-connect-rate"
+    },
+    {
+      "id": "I014",
+      "title": "Medidor Speed 99/100",
+      "date": "2026-10-16",
+      "source": {
+        "type": "video",
+        "ref": "Ads 03 v1-corte",
+        "at": "0:14",
+        "job": "editor-studio/data/jobs/ads-03-mvab2akf"
+      },
+      "line": "Nos casos medidos pela plataforma Speed chegamos a 99 de 100",
+      "catalogCheck": "M05 e M26 contam números em cartões; nenhum tem medidor circular de nota 0–100 nem mostra a nota subindo até o verde.",
+      "why": "Um medidor circular que sobe de 0 a 99 prova a nota em vez de só dizê-la.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Medidor no peito",
+          "desc": "Sobre o vídeo: título Speed subiu. e cartão creme com anel verde enchendo até 99.",
+          "file": "modules/I014-speed-gauge/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Boletim",
+          "desc": "Fundo noite: anel gigante 99/100 e três anéis menores com as outras notas.",
+          "file": "modules/I014-speed-gauge/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Antes e depois",
+          "desc": "Roxo chapado: anel vermelho de 41 (plugins, ilustrativo) ao lado do anel verde 99 do Insula Build.",
+          "file": "modules/I014-speed-gauge/still-C.jpg"
+        }
+      ],
+      "pick": "A",
+      "builtAs": "M34",
+      "module": "modules/I014-speed-gauge"
+    }
+  ]
+}

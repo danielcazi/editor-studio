@@ -1,0 +1,1063 @@
+{
+  "about": "Catálogo do motion mod. Cada módulo é uma peça de motion reutilizável. 'source' diz onde o código vive; 'vars' diz o que muda para reaproveitar; 'thumb' diz de onde a galeria tira a miniatura (filme, viewport, tempo). Rode `node library/build.mjs` depois de editar.",
+  "modules": [
+    {
+      "id": "M01",
+      "name": "Título que digita",
+      "kind": "abertura",
+      "style": "Insula UI",
+      "what": "Frase de 2 a 3 linhas digitada com cursor, última linha sublinhada em roxo; card isométrico com % ao lado.",
+      "vars": [
+        "linhas do título",
+        "palavra sublinhada",
+        "valor do card"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s1"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 3.0
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M02",
+      "name": "Prompt digitado",
+      "kind": "demo de produto",
+      "style": "Insula UI",
+      "what": "Caixa de prompt flutuante: o texto é digitado, o cursor clica em Gerar e aparecem os checks de etapa.",
+      "vars": [
+        "texto do prompt",
+        "rótulo do botão",
+        "etapas"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s2"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 7.5
+      },
+      "uses": [
+        "Ínsula Build 45s",
+        "04 CAZI S-EFX (plano PRO)"
+      ]
+    },
+    {
+      "id": "M03",
+      "name": "Lista que acende + página em camadas",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Lista de 4 itens acende um a um enquanto a página se monta em camadas isométricas que pousam.",
+      "vars": [
+        "itens da lista",
+        "camadas da página"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s2 / sw"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 16.5
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M04",
+      "name": "Editor: arraste, solte, ajuste",
+      "kind": "demo de produto",
+      "style": "Insula UI",
+      "what": "Editor em tela com cursor que seleciona, arrasta, redimensiona e gira um elemento; verbo grande à esquerda a cada ação.",
+      "vars": [
+        "verbos",
+        "elemento manipulado",
+        "coordenadas do chip"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "sw"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 22.5
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M05",
+      "name": "Cards de números",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Três cards entram em sequência; cada número conta até o valor final com rótulo e miniatura.",
+      "vars": [
+        "números",
+        "rótulos",
+        "miniaturas"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s5"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 30.0
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M06",
+      "name": "Troca de dispositivo",
+      "kind": "demo de produto",
+      "style": "Insula UI",
+      "what": "A mesma página encolhe de desktop para celular com o seletor de dispositivo e um painel de propriedades.",
+      "vars": [
+        "página",
+        "dispositivos"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s5 / s6"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 33.0
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M07",
+      "name": "Faixa de promessa + navegador",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Fundo roxo, frase-promessa em branco à esquerda e um navegador que carrega a página e recebe notificações.",
+      "vars": [
+        "frase",
+        "URL",
+        "notificações"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s6"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 37.5
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M08",
+      "name": "Fechamento logo + CTA",
+      "kind": "fechamento",
+      "style": "Insula UI",
+      "what": "Logo Insula montado, headline com destaque roxo e botão CTA clicado pelo cursor.",
+      "vars": [
+        "headline",
+        "palavra destacada",
+        "texto do botão",
+        "rodapé"
+      ],
+      "source": {
+        "film": "insula-build",
+        "fn": "s7"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-build",
+        "w": 1920,
+        "h": 1080,
+        "t": 43.5
+      },
+      "uses": [
+        "Ínsula Build 45s"
+      ]
+    },
+    {
+      "id": "M09",
+      "name": "Palavra-chave + objeto 3D",
+      "kind": "overlay",
+      "style": "Insula Ads",
+      "what": "Palavras grandes saltam uma a uma acima da pessoa recortada; objetos 3D de argila surgem com mola e flutuam.",
+      "vars": [
+        "palavras",
+        "cor de destaque",
+        "objetos 3D (Artlist)"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "kw + pop (S1)"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 2.4
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi",
+        "04 CAZI S-EFX (plano PRO)"
+      ]
+    },
+    {
+      "id": "M10",
+      "name": "Cortina roxa",
+      "kind": "transição",
+      "style": "Insula Ads",
+      "what": "Bloco roxo atravessa a tela e troca a cena por baixo.",
+      "vars": [
+        "cor",
+        "lista de cortes (CUTS)"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "wipe"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 6.08
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi"
+      ]
+    },
+    {
+      "id": "M11",
+      "name": "Mockup de página em tela cheia",
+      "kind": "demo de produto",
+      "style": "Insula Ads",
+      "what": "Página real em wireframe roxo ocupa a tela, com título em duas cores no topo e seletor de dispositivo.",
+      "vars": [
+        "título",
+        "página/screenshot"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "SA"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 3.6
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi"
+      ]
+    },
+    {
+      "id": "M12",
+      "name": "Card de chat sobre a pessoa",
+      "kind": "overlay",
+      "style": "Insula Ads",
+      "what": "Ícone de dúvida 3D e card de mensagem do cliente com reticências digitando, na frente da pessoa.",
+      "vars": [
+        "remetente",
+        "mensagem",
+        "ícone"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S3"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 8.4
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi"
+      ]
+    },
+    {
+      "id": "M13",
+      "name": "Bloco de marca",
+      "kind": "overlay",
+      "style": "Insula Ads",
+      "what": "Fundo vira roxo, logo no topo e uma palavra branca gigante sobre o peito da pessoa.",
+      "vars": [
+        "palavra",
+        "cor do fundo"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S4 / S12"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 10.8
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi",
+        "04 CAZI S-EFX (plano PRO)"
+      ]
+    },
+    {
+      "id": "M14",
+      "name": "Arrastar pixel a pixel",
+      "kind": "demo de produto",
+      "style": "Insula Ads",
+      "what": "Botão e card arrastados pelo cursor na frente da pessoa, com chip de coordenadas X/Y que acompanha.",
+      "vars": [
+        "elemento",
+        "coordenadas",
+        "título"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S6"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 16.8
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi"
+      ]
+    },
+    {
+      "id": "M15",
+      "name": "Riscado com peças",
+      "kind": "overlay",
+      "style": "Insula Ads",
+      "what": "Título 'sem X' é riscado enquanto peças de quebra-cabeça 3D flutuam e somem.",
+      "vars": [
+        "palavra riscada",
+        "objetos"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S7"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 20.4
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi",
+        "04 CAZI S-EFX (plano PRO)"
+      ]
+    },
+    {
+      "id": "M16",
+      "name": "Prompt IA → página",
+      "kind": "demo de produto",
+      "style": "Insula Ads",
+      "what": "Card de prompt sobre a pessoa, depois insert com a página montada em camadas.",
+      "vars": [
+        "prompt",
+        "título",
+        "insert"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S8 / SC"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 25.2
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi"
+      ]
+    },
+    {
+      "id": "M17",
+      "name": "Ícones de integração",
+      "kind": "overlay",
+      "style": "Insula Ads",
+      "what": "Título grande ('via MCP') e ícones de app que entram em fila na base do quadro.",
+      "vars": [
+        "título",
+        "ícones e rótulos"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S10"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 27.6
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi",
+        "04 CAZI S-EFX (plano PRO)"
+      ]
+    },
+    {
+      "id": "M18",
+      "name": "CTA de oferta",
+      "kind": "fechamento",
+      "style": "Insula Ads",
+      "what": "Fundo roxo, logo, oferta em duas linhas gigantes, ícone de calendário e botão clicado.",
+      "vars": [
+        "oferta",
+        "número do calendário",
+        "botão",
+        "rodapé"
+      ],
+      "source": {
+        "film": "insula-ads-cazi",
+        "fn": "S12"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "insula-ads-cazi",
+        "w": 1080,
+        "h": 1920,
+        "t": 35.5
+      },
+      "uses": [
+        "01 Ads Insula Build Cazi",
+        "04 CAZI S-EFX (plano PRO)"
+      ]
+    },
+    {
+      "id": "M19",
+      "name": "Pôr do sol + título serifado",
+      "kind": "abertura",
+      "style": "Hook cinematográfico",
+      "what": "Pessoa recortada diante de um sol laranja; o título serifado sobe letra a letra sobre o peito.",
+      "vars": [
+        "título",
+        "cor do céu"
+      ],
+      "source": {
+        "film": "hook-procrastinacao",
+        "fn": "paint (cena 1)"
+      },
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "hook-procrastinacao",
+        "w": 1080,
+        "h": 1920,
+        "t": 1.05
+      },
+      "uses": [
+        "01 HOOK Procrastinação",
+        "02 HOOK Psicoterapia"
+      ]
+    },
+    {
+      "id": "M20",
+      "name": "Anotações à mão no papel",
+      "kind": "explicação",
+      "style": "Hook cinematográfico",
+      "what": "Fundo de papel; setas, caixas e palavras se desenham a lápis em volta da pessoa, com etiqueta de papel no peito.",
+      "vars": [
+        "notas (texto + posição)",
+        "etiqueta",
+        "cabeçalho"
+      ],
+      "source": {
+        "film": "hook-procrastinacao",
+        "fn": "NOTES + paintNotes"
+      },
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "hook-procrastinacao",
+        "w": 1080,
+        "h": 1920,
+        "t": 3.5
+      },
+      "uses": [
+        "01 HOOK Procrastinação",
+        "02 HOOK Psicoterapia"
+      ]
+    },
+    {
+      "id": "M21",
+      "name": "Silhueta + cartões flutuando",
+      "kind": "explicação",
+      "style": "Hook cinematográfico",
+      "what": "Pessoa vira silhueta preta no branco com halo; cartões (vazios ou com perguntas) flutuam em volta; título serifado no topo.",
+      "vars": [
+        "título",
+        "cartões (texto ou vazios)"
+      ],
+      "source": {
+        "film": "hook-procrastinacao",
+        "fn": "CARDS (cena 3)"
+      },
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "hook-procrastinacao",
+        "w": 1080,
+        "h": 1920,
+        "t": 4.55
+      },
+      "uses": [
+        "01 HOOK Procrastinação",
+        "02 HOOK Psicoterapia"
+      ]
+    },
+    {
+      "id": "M22",
+      "name": "Raio-x dourado + disco vermelho",
+      "kind": "ênfase",
+      "style": "Hook cinematográfico",
+      "what": "Pessoa em gradação dourada no preto, disco vermelho pulsando atrás e brasas subindo; título em duas linhas.",
+      "vars": [
+        "título",
+        "cor do disco"
+      ],
+      "source": {
+        "film": "hook-procrastinacao",
+        "fn": "paint (cena 4) + EMB"
+      },
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "hook-procrastinacao",
+        "w": 1080,
+        "h": 1920,
+        "t": 5.6
+      },
+      "uses": [
+        "01 HOOK Procrastinação",
+        "02 HOOK Psicoterapia"
+      ]
+    },
+    {
+      "id": "M23",
+      "name": "Silhueta no sol + slam",
+      "kind": "fechamento",
+      "style": "Hook cinematográfico",
+      "what": "Silhueta diante de um sol enorme, título final batendo com tremida e fade para o preto.",
+      "vars": [
+        "título final"
+      ],
+      "source": {
+        "film": "hook-procrastinacao",
+        "fn": "paint (cena 5)"
+      },
+      "formats": [
+        "9:16",
+        "16:9"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "hook-procrastinacao",
+        "w": 1080,
+        "h": 1920,
+        "t": 7.7
+      },
+      "uses": [
+        "01 HOOK Procrastinação",
+        "02 HOOK Psicoterapia"
+      ]
+    },
+    {
+      "id": "M24",
+      "name": "Lupa de pixel",
+      "kind": "demo de produto",
+      "style": "Insula UI",
+      "what": "Cursor arrasta um elemento com coordenadas ao vivo; uma lupa abre no canto e a mira encaixa no pixel; o verbo sobe letra a letra.",
+      "vars": [
+        "verb",
+        "x",
+        "y",
+        "button",
+        "timing.grab",
+        "timing.drop",
+        "timing.lens",
+        "timing.snap"
+      ],
+      "source": {
+        "film": "library/modules/I001-pixel-rulers",
+        "fn": "LOOKS.B (A Mira e C Cotas ficam como stills)"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "parametrizado",
+      "thumb": {
+        "film": "library/modules/I001-pixel-rulers",
+        "w": 1920,
+        "h": 1080,
+        "t": 3.2
+      },
+      "uses": [
+        "Ínsula Build 45s (0:18)"
+      ],
+      "idea": "I001",
+      "file": "library/modules/I001-pixel-rulers/I001-pixel-rulers-B.mp4"
+    },
+    {
+      "id": "M25",
+      "name": "Cronômetro do prompt ao ar",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Relógio gigante corre do 0:00 ao total, cada etapa enche a sua barra e o site se monta, é ajustado, ganha domínio e vai ao ar.",
+      "vars": [
+        "total",
+        "steps (tempo + rótulo)",
+        "url",
+        "timing.run",
+        "timing.gen"
+      ],
+      "source": {
+        "film": "library/modules/I003-zero-to-live",
+        "fn": "LOOKS.B (A Linha do tempo e C Pilha ficam como stills)"
+      },
+      "formats": [
+        "16:9"
+      ],
+      "reuse": "parametrizado",
+      "thumb": {
+        "film": "library/modules/I003-zero-to-live",
+        "w": 1920,
+        "h": 1080,
+        "t": 4.2
+      },
+      "uses": [
+        "Ínsula Build 45s (0:36)"
+      ],
+      "idea": "I003",
+      "file": "library/modules/I003-zero-to-live/I003-zero-to-live-B.mp4"
+    },
+    {
+      "id": "M26",
+      "name": "Painel no escuro",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Três cartões no peito: no modo 'dark' entram escuros com '?' a cada pergunta dita; no 'reveal' o selo vira GA4 e cada cartão acende contando até o número.",
+      "vars": [
+        "mode",
+        "metrics (pergunta, rótulo, valor)",
+        "period",
+        "timing.dark.at",
+        "timing.reveal.at"
+      ],
+      "source": {
+        "film": "library/modules/I005-painel-no-escuro",
+        "fn": "LOOKS.A (B Painel e C Lanterna ficam como stills)"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I005-painel-no-escuro",
+        "w": 1080,
+        "h": 1920,
+        "t": 6.5
+      },
+      "uses": [
+        "04 CAZI S-EFX (plano PRO) 0:15 e 0:33"
+      ],
+      "idea": "I005"
+    },
+    {
+      "id": "M27",
+      "name": "Resultado do Google",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Por cima do vídeo: a busca local é digitada, o resultado do site sobe com o selo '3 páginas' e cada link acende quando a fala chega nele.",
+      "vars": [
+        "query",
+        "brand",
+        "domain",
+        "pages (título, etiqueta)",
+        "timing"
+      ],
+      "source": {
+        "film": "library/modules/I006-tres-paginas",
+        "fn": "LOOKS.B (A Leque e C Raio-x ficam como stills)"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I006-tres-paginas",
+        "w": 1080,
+        "h": 1920,
+        "t": 5.0
+      },
+      "uses": [
+        "04 CAZI S-EFX (plano PRO) 0:24"
+      ],
+      "idea": "I006"
+    },
+    {
+      "id": "M29",
+      "name": "Lista que pula pro próximo",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Card de resultados no peito: o seu site acende, falha com ✕, o destaque pula pro concorrente e sobe o selo \"−1 paciente\".",
+      "vars": [
+        "results",
+        "chip",
+        "timing"
+      ],
+      "source": {
+        "film": "demo-achilles-mv9tpirj",
+        "fn": "paintI2"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "demo-achilles-mv9tpirj",
+        "w": 1080,
+        "h": 1920,
+        "t": 10.95
+      },
+      "uses": [
+        "04 CAZI S-EFX (job demo-achilles) 0:07"
+      ],
+      "idea": "I009"
+    },
+    {
+      "id": "M30",
+      "name": "Perguntas no escuro",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Fundo noite, pessoa recortada; três perguntas sobem uma a uma e apagam quando o título \"no escuro.\" entra.",
+      "vars": [
+        "questions",
+        "headline",
+        "timing"
+      ],
+      "source": {
+        "film": "demo-achilles-mv9tpirj",
+        "fn": "paintI3 + paintC"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "demo-achilles-mv9tpirj",
+        "w": 1080,
+        "h": 1920,
+        "t": 20.95
+      },
+      "uses": [
+        "04 CAZI S-EFX (job demo-achilles) 0:15"
+      ],
+      "idea": "I010"
+    },
+    {
+      "id": "M31",
+      "name": "Três páginas no editor",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Fundo da marca, três páginas sobem em leque, a do meio ganha as alças do editor e cada rótulo acende com a fala.",
+      "vars": [
+        "headline",
+        "labels",
+        "timing"
+      ],
+      "source": {
+        "film": "demo-achilles-mv9tpirj",
+        "fn": "paintI4 + paintC"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "demo-achilles-mv9tpirj",
+        "w": 1080,
+        "h": 1920,
+        "t": 29.2
+      },
+      "uses": [
+        "04 CAZI S-EFX (job demo-achilles) 0:25"
+      ],
+      "idea": "I011"
+    },
+    {
+      "id": "M32",
+      "name": "Painel de integrações",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Card no peito com ícones WhatsApp, CRM e GA4 entrando conforme a fala e três números que sobem (visitas, origem, cliques).",
+      "vars": [
+        "icons",
+        "stats",
+        "timing"
+      ],
+      "source": {
+        "film": "demo-achilles-mv9tpirj",
+        "fn": "paintI5"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "copiar e adaptar",
+      "thumb": {
+        "film": "demo-achilles-mv9tpirj",
+        "w": 1080,
+        "h": 1920,
+        "t": 39.5
+      },
+      "uses": [
+        "04 CAZI S-EFX (job demo-achilles) 0:30"
+      ],
+      "idea": "I012"
+    },
+    {
+      "id": "M28",
+      "name": "Relatório sem a linha que importa",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Título no topo e cartão de relatório no peito: a busca por 'pacientes perdidos' é digitada, as barras crescem e a resposta é '0 resultados'.",
+      "vars": [
+        "title",
+        "month",
+        "rows",
+        "missing",
+        "timing.type",
+        "timing.result"
+      ],
+      "source": {
+        "film": "library/modules/I007-relatorio",
+        "fn": "LOOKS.B (A Planilha e C Recibo ficam como stills)"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I007-relatorio",
+        "w": 1080,
+        "h": 1920,
+        "t": 1.3
+      },
+      "uses": [
+        "04 CAZI S-EFX (plano PRO) 0:02"
+      ],
+      "idea": "I007"
+    },
+    {
+      "id": "M33",
+      "name": "Connect rate no Gerenciador",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Sobre o vídeo: título connect rate e três linhas estilo Gerenciador (cliques, visualizações) contando; a última acende em roxo com a taxa.",
+      "vars": [
+        "title",
+        "clicks",
+        "views",
+        "panel",
+        "timing"
+      ],
+      "source": {
+        "film": "library/modules/I013-connect-rate",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I013-connect-rate",
+        "w": 1080,
+        "h": 1920,
+        "t": 1.3
+      },
+      "uses": [
+        "Ads 03 (job ads-03-mvab2akf)"
+      ],
+      "idea": "I013"
+    },
+    {
+      "id": "M34",
+      "name": "Medidor Speed 99/100",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Sobre o vídeo: título Speed subiu. e cartão creme com anel que enche de 0 à nota e fica verde.",
+      "vars": [
+        "score",
+        "label",
+        "timing"
+      ],
+      "source": {
+        "film": "library/modules/I014-speed-gauge",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I014-speed-gauge",
+        "w": 1080,
+        "h": 1920,
+        "t": 1.5
+      },
+      "uses": [
+        "Ads 03 (job ads-03-mvab2akf)"
+      ],
+      "idea": "I014"
+    }
+  ],
+  "tools": [
+    {
+      "id": "T01",
+      "name": "Render por quadro",
+      "what": "render.mjs: renderiza qualquer filme com window.seek(t), folha de contato (--sheet) ou quadros completos.",
+      "source": "render.mjs"
+    },
+    {
+      "id": "T02",
+      "name": "Trilha sintetizada no grid",
+      "what": "Trilha e SFX gerados em código nas batidas de beats.json.",
+      "source": "insula-build/score.py"
+    },
+    {
+      "id": "T03",
+      "name": "Mix voz + música + SFX",
+      "what": "Sidechain da música sob a voz, SFX do sfx.json, saída em -14 LUFS.",
+      "source": "hook-procrastinacao/mix.py"
+    },
+    {
+      "id": "T04",
+      "name": "Exportar camadas para o After Effects",
+      "what": "?layer= exporta cada camada em PNG e make_jsx.mjs monta a comp com títulos nativos.",
+      "source": "hook-psicoterapia/ae/"
+    },
+    {
+      "id": "T05",
+      "name": "Recorte da pessoa",
+      "what": "BiRefNet (rembg birefnet-portrait), um worker só; silhuetas por canvas source-in.",
+      "source": "memória: cinematic-hook-style"
+    }
+  ]
+}

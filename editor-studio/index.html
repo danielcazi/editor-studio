@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080908; --panel:#101210; --panel2:#171917; --line:#242724;
+  --cream:#f4f1e0; --ink:#0c0d0c; --mute:#8a8d84; --dim:#5d6058;
+  --yellow:#f2e600; --green:#3ddc4b; --blue:#1414ff; --red:#ff5a4d;
+  --serif:'Instrument Serif',Georgia,serif; --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--cream);font-family:var(--sans);min-height:100vh;display:grid;grid-template-columns:260px 1fr}
+button,input,textarea{font:inherit;color:inherit}
+.mono{font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--mute)}
+
+/* sidebar */
+aside{border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{font-family:var(--serif);font-size:26px;line-height:1}
+.brand i{color:var(--yellow)}
+.job{display:block;width:100%;text-align:left;background:none;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;margin-bottom:8px}
+.job:hover{background:var(--panel)}
+.job.on{background:var(--panel2);border-color:#3a3e3a}
+.job b{display:block;font-weight:500;font-size:14px;margin-bottom:6px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:#222522;color:var(--mute)}
+.badge.ai{background:var(--yellow);color:var(--ink)}
+.badge.you{background:var(--green);color:var(--ink)}
+.newjob{display:flex;gap:6px}
+.newjob input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13px}
+
+/* main */
+main{padding:34px 48px 80px;max-width:1180px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 36px}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--mute);cursor:pointer}
+.pill.on{background:var(--yellow);color:var(--ink);border-color:var(--yellow);font-weight:700}
+.pill.done{color:var(--green);border-color:#1f4a24}
+.pill:disabled{opacity:.4;cursor:default}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,6.4vw,84px);line-height:.95;letter-spacing:-.01em;margin-bottom:18px}
+h1 em{color:var(--yellow)}
+.lead{font-family:var(--serif);font-size:24px;color:#b9bbb0;max-width:640px;line-height:1.25;margin-bottom:34px}
+h2{font-family:var(--serif);font-weight:400;font-size:30px;margin:0 0 14px}
+.sec{border-top:1px solid var(--line);padding:26px 0}
+.sec .mono{display:block;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card.cream{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.card.cream .mono{color:#6a6c60}
+.card.green{background:var(--green);color:var(--ink);border-color:var(--green)}
+.card.green .mono{color:#17501c}
+.card.sel{outline:3px solid var(--yellow);outline-offset:2px}
+.card h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:1.1;margin-bottom:8px}
+.card p{font-size:14px;line-height:1.5;color:inherit;opacity:.85}
+textarea,.field{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;font-size:14px;line-height:1.5;resize:vertical;min-height:110px}
+textarea:focus,.field:focus,.newjob input:focus{outline:2px solid var(--yellow);outline-offset:0}
+.btn{border:0;border-radius:99px;padding:13px 22px;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.04em;cursor:pointer;background:var(--yellow);color:var(--ink)}
+.btn:hover{filter:brightness(1.08)}
+.btn.blue{background:var(--blue);color:#fff}
+.btn.ghost{background:transparent;color:var(--cream);border:1px solid #3a3e3a}
+.card.cream .btn.ghost,.card.green .btn.ghost{color:var(--ink);border-color:rgba(0,0,0,.4)}
+.btn.sm{padding:8px 14px;font-size:11px}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.drop{border:1.5px dashed #3a3e3a;border-radius:14px;padding:22px;text-align:center;cursor:pointer;background:var(--panel);transition:.15s}
+.drop:hover,.drop.over{border-color:var(--yellow);background:var(--panel2)}
+.drop b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:4px}
+.drop small{color:var(--mute);font-size:12px}
+.drop.has{border-style:solid;border-color:#2c5a31;text-align:left}
+.drop .fname{color:var(--green);font-family:var(--mono);font-size:12px;word-break:break-all}
+.note{border-left:3px solid var(--yellow);background:var(--panel);padding:16px 20px;border-radius:0 12px 12px 0;font-family:var(--serif);font-size:22px;line-height:1.3;max-width:760px}
+.wait{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);animation:p 1.2s infinite}
+@keyframes p{50%{opacity:.25}}
+code,pre{font-family:var(--mono);font-size:12.5px}
+pre{background:#0d0f0d;border:1px solid var(--line);border-radius:12px;padding:14px;white-space:pre-wrap;color:#c9ccbf;line-height:1.55}
+.hl{color:var(--yellow)}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;font-size:14px;line-height:1.5}
+.kv dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);padding-top:3px}
+.kv dd{margin:0}
+.still{aspect-ratio:16/9;border-radius:10px;background:#0d0f0d;border:1px solid var(--line);overflow:hidden;display:grid;place-items:center;margin-bottom:12px;color:var(--dim);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:12px}
+.still:has(img){aspect-ratio:auto;padding:0;display:block}
+.still img{width:100%;height:auto;display:block}
+.card.cream .still{background:#e6e2cf;border-color:#d4d0bb;color:#8b8870}
+video{width:100%;max-width:380px;border-radius:14px;background:#000;display:block}
+.empty{color:var(--mute);font-size:14px;padding:6px 0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--cream);color:var(--ink);padding:11px 18px;border-radius:99px;font-family:var(--mono);font-size:12px;font-weight:700;opacity:0;transition:.2s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* portões novos */
+.axis{border-top:1px solid var(--line);padding:24px 0}
+.axis-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.opt{position:relative;text-align:left;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;display:grid;gap:8px}
+.opt:hover{border-color:#3a3e3a}
+.opt img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:9px;display:block;background:#0d0f0d}
+.opt.wide img{aspect-ratio:auto;max-height:340px;object-fit:contain}
+.opt b{font-weight:500;font-size:15px}
+.opt small{color:var(--mute);font-size:13px;line-height:1.45}
+.opt.sel{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(242,230,0,.18)}
+.opt .rec{position:absolute;top:18px;left:18px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--yellow);padding:3px 8px;border-radius:99px}
+.opt .chk{position:absolute;top:18px;right:18px;width:26px;height:26px;border-radius:50%;background:var(--panel);border:1.5px solid #3a3e3a;display:grid;place-items:center;color:var(--ink);font-size:14px;font-weight:700}
+.opt.sel .chk{background:var(--yellow);border-color:var(--yellow)}
+.opt.own{border-style:dashed;place-content:center;text-align:center;min-height:200px;color:var(--mute)}
+.tl{display:grid;gap:8px}
+.trow{display:grid;grid-template-columns:62px minmax(0,1.3fr) minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.trow.pass{opacity:.45}
+.trow .t{font-family:var(--mono);font-size:13px;color:var(--yellow)}
+.trow .line{font-family:var(--serif);font-size:19px;line-height:1.25}
+.trow .what{font-size:13px;color:#c9ccbf;line-height:1.45}
+.trow .field{grid-column:2/-1;min-height:0;padding:8px 12px;font-size:13px}
+.piece{display:inline-block;margin-top:5px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;padding:2px 8px;border-radius:6px}
+.piece.lib{background:#1d2a5c;color:#b9c3ff}
+.piece.new{background:#4a3a07;color:var(--yellow)}
+.seg{display:inline-flex;border:1px solid #3a3e3a;border-radius:99px;overflow:hidden}
+.seg button{background:none;border:0;padding:8px 13px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--mute);cursor:pointer}
+.seg button.on.ok{background:var(--green);color:var(--ink)}
+.seg button.on.no{background:#3a3e3a;color:var(--cream)}
+.sb{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.fr{background:none;border:0;padding:0;text-align:left;cursor:pointer;display:grid;gap:5px;color:var(--cream)}
+.fr img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:9px;border:2px solid transparent;display:block;background:#0d0f0d}
+.fr.wide img{aspect-ratio:16/9}
+.fr .mono{font-size:10px;letter-spacing:.06em}
+.fr.flag img{border-color:var(--red)}
+.fr.flag .mono{color:var(--red)}
+.flagbox{display:grid;gap:10px;margin-top:18px;padding:16px;border:1px solid #5a2a24;background:#1c1210;border-radius:12px}
+.flagbox .field{min-height:0;padding:9px 12px}
+#body.locked .row,#body.locked #rn,#body.locked .sec:has(#rn){display:none}
+#body.locked .opt,#body.locked .seg,#body.locked .fr,#body.locked .field,#body.locked .drop,#body.locked textarea{pointer-events:none}
+.lockmsg{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+@media(max-width:860px){.trow{grid-template-columns:52px minmax(0,1fr)}.trow .what,.trow .seg,.trow .field{grid-column:2}}
+@media(max-width:860px){body{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:24px 18px 60px}}
+</style>
+</head>
+<body>
+<aside>
+  <div>
+    <div class="brand">Editor <i>Studio</i></div>
+    <div class="mono" style="margin-top:8px">Works with Claude Code</div>
+  </div>
+  <div>
+    <div class="mono" style="margin-bottom:10px">Vídeos</div>
+    <div id="jobs"></div>
+    <form class="newjob" id="newform"><input id="newtitle" placeholder="Nome do novo vídeo" autocomplete="off"><button class="btn sm" type="submit">+</button></form>
+  </div>
+  <button class="pill" id="refsbtn" style="margin-top:auto;text-align:left">Banco de referências</button>
+</aside>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const api = async (url, opt = {}) => {
+  const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opt });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.status);
+  return r.json();
+};
+const toast = (t) => { const e = $('#toast'); e.textContent = t; e.classList.add('show'); setTimeout(() => e.classList.remove('show'), 2200); };
+
+const STEPS = [
+  { key: 'envio',      n: '01', label: 'Envio' },
+  { key: 'refs',       n: '02', label: 'Banco de ref' },
+  { key: 'devolutiva', n: '03', label: 'Devolutiva' },
+  { key: 'stills',     n: '04', label: 'Stills' },
+  { key: 'storyboard', n: '05', label: 'Storyboard' },
+  { key: 'video',      n: '06', label: 'Vídeo no After' },
+];
+const HERO = {
+  envio:      ['Mande o <em>material</em>', 'Vídeo decupado, trilha, legenda em .srt e o briefing falado. É tudo que a IA precisa pra começar.'],
+  refs:       ['Escolha as <em>referências</em>', 'A IA traz até 3 opções por eixo, já com uma sugestão. Escolha uma em cada ou suba a sua.'],
+  devolutiva: ['Ideias e <em>definições</em>', 'Cada momento do vídeo é uma linha. Aprove ou passe, e deixe nota onde quiser mudar.'],
+  stills:     ['Stills antes do <em>movimento</em>', 'Só as peças novas que você aprovou. Três direções para cada uma.'],
+  storyboard: ['O vídeo inteiro <em>parado</em>', 'Um quadro por momento, com tudo no lugar. Marque o que quer mudar antes de renderizar.'],
+  video:      ['Do storyboard ao <em>vídeo</em>', 'A IA monta no After Effects, em camadas editáveis, e entrega o MP4.'],
+};
+const TASK_WHAT = {
+  refs: 'as opções de referência', devolutiva: 'a devolutiva', stills: 'os stills',
+  storyboard: 'o storyboard', video: 'o vídeo no After Effects',
+};
+const AXES = [['edicao', 'Edição', 'Como o vídeo corta e respira'], ['lettering', 'Lettering', 'Como o texto aparece'], ['motion', 'Motion', 'Como os gráficos entram']];
+
+let state = { jobs: [], job: null, view: 'job', step: 'envio', refs: null };
+let lastSig = '';
+
+/* ---------- dados ---------- */
+async function loadJobs() { state.jobs = await api('/api/jobs'); }
+async function openJob(id) {
+  state.job = await api('/api/jobs/' + id);
+  state.view = 'job'; state.step = state.job.stage;
+  lastSig = JSON.stringify(state.job);
+  render();
+}
+async function patch(obj) {
+  state.job = await api('/api/jobs/' + state.job.id, { method: 'PATCH', body: JSON.stringify(obj) });
+  lastSig = JSON.stringify(state.job);
+  await loadJobs(); render();
+}
+function upload(file, qs) {
+  return fetch('/api/upload?' + qs + '&name=' + encodeURIComponent(file.name), { method: 'POST', body: file }).then((r) => r.json());
+}
+const stageIdx = (k) => STEPS.findIndex((s) => s.key === k);
+const go = (stage, aiTask, extra = {}) => patch({ stage, aiTask, ...extra }).then(() => { state.step = stage; render(); });
+const img = (p) => p ? `/files/${esc(p)}` : '';
+
+/* ---------- render ---------- */
+function renderSide() {
+  $('#jobs').innerHTML = state.jobs.length ? state.jobs.map((j) => `
+    <button class="job ${state.job && state.job.id === j.id && state.view === 'job' ? 'on' : ''}" data-id="${j.id}">
+      <b>${esc(j.title)}</b>
+      <span class="badge ${j.aiTask ? 'ai' : 'you'}">${j.aiTask ? 'IA trabalhando' : 'Sua vez'}</span>
+      <span class="badge">${STEPS[stageIdx(j.stage)]?.label || ''}</span>
+    </button>`).join('') : '<div class="empty">Nenhum vídeo ainda.</div>';
+  document.querySelectorAll('.job').forEach((b) => b.onclick = () => openJob(b.dataset.id));
+  $('#refsbtn').classList.toggle('on', state.view === 'refs');
+}
+
+function render() {
+  renderSide();
+  if (state.view === 'refs') return renderRefs();
+  const j = state.job;
+  if (!j) { $('#app').innerHTML = `<div class="mono">Editor Studio</div><h1 style="margin-top:14px">Motion <em>no piloto</em> automático</h1><p class="lead">Crie um vídeo na barra lateral para começar. A IA só avança quando você aprova cada etapa.</p>`; return; }
+  if (stageIdx(state.step) < 0) state.step = 'envio';
+  const cur = Math.max(0, stageIdx(j.stage));
+  const hero = HERO[state.step];
+  $('#app').innerHTML = `
+    <div class="mono">${esc(j.title)} · ${j.aiTask ? 'IA trabalhando em ' + (TASK_WHAT[j.aiTask] || j.aiTask) : 'aguardando você'}</div>
+    <div class="tabs">${STEPS.map((s, i) => `
+      <button class="pill ${s.key === state.step ? 'on' : ''} ${i < cur ? 'done' : ''}" data-step="${s.key}" ${i > cur ? 'disabled' : ''}>${s.n} ${s.label}</button>`).join('')}</div>
+    <h1>${hero[0]}</h1><p class="lead">${hero[1]}</p>
+    <div id="body"></div>`;
+  document.querySelectorAll('[data-step]').forEach((b) => b.onclick = () => { state.step = b.dataset.step; render(); });
+  const el = $('#body');
+  // a etapa atual está com a IA: mostra o comando em vez da tela
+  if (j.aiTask && state.step === j.stage) { el.innerHTML = waitBox(j); wireCopy(); wireAuto(j); return; }
+  ({ envio: viewEnvio, refs: viewRefs, devolutiva: viewDevolutiva, stills: viewStills, storyboard: viewStoryboard, video: viewVideo })[state.step](j, el);
+  // etapa já aprovada: só consulta, para não refazer o fluxo sem querer
+  if (stageIdx(state.step) < cur) { el.classList.add('locked'); el.insertAdjacentHTML('afterbegin', '<div class="lockmsg">Etapa aprovada · só consulta</div>'); }
+}
+
+/* campo de upload reutilizável */
+function dropHtml(id, title, hint, fileObj) {
+  return `<label class="drop ${fileObj ? 'has' : ''}" data-drop="${id}">
+    <b>${esc(title)}</b>
+    ${fileObj ? `<span class="fname">${esc(fileObj.name)}</span>` : `<small>${esc(hint)}</small>`}
+    <input type="file" hidden data-file="${id}"></label>`;
+}
+function wireDrops(root, jobId, onDone) {
+  root.querySelectorAll('[data-file]').forEach((inp) => {
+    const box = inp.closest('.drop');
+    const up = async (f) => {
+      if (!f) return;
+      box.querySelector('b').textContent = 'Enviando…';
+      const r = await upload(f, `scope=job&id=${jobId}`);
+      onDone(inp.dataset.file, { name: r.name, path: r.path });
+    };
+    inp.onchange = () => up(inp.files[0]);
+    box.ondragover = (e) => { e.preventDefault(); box.classList.add('over'); };
+    box.ondragleave = () => box.classList.remove('over');
+    box.ondrop = (e) => { e.preventDefault(); box.classList.remove('over'); up(e.dataTransfer.files[0]); };
+  });
+}
+function waitBox(j) {
+  const prompt = `Leia editor-studio/WORKFLOW.md e execute a tarefa "${j.aiTask}" do job ${j.id} (videos/${j.id}/job.json).`;
+  const err = j.aiError ? `<div class="empty" style="color:#b3261e">${esc(j.aiError)}</div>` : '';
+  return `<div class="wait"><span class="dot"></span><div><b>A IA está montando ${TASK_WHAT[j.aiTask] || j.aiTask}.</b>
+    <div class="empty" id="autoMsg">Verificando a sessão automática…</div>${err}</div></div>
+    <details style="margin-top:14px"><summary class="mono">Rodar à mão (se a sessão automática estiver desligada)</summary>
+    <pre style="margin-top:10px" id="pr">${esc(prompt)}</pre>
+    <div class="row" style="margin-top:10px"><button class="btn sm ghost" id="cp">Copiar comando</button></div></details>`;
+}
+function wireAuto(j) {
+  const m = $('#autoMsg'); if (!m) return;
+  fetch(`/api/jobs/${j.id}/ai`).then((r) => r.json()).then((a) => {
+    if (a.running) m.textContent = 'Uma conversa do Claude foi aberta só para este vídeo e está trabalhando. A tela atualiza sozinha.';
+    else if (a.auto && !a.aiError) { m.textContent = 'Iniciando a conversa do Claude…'; fetch(`/api/jobs/${j.id}/ai`, { method: 'POST' }); }
+    else m.textContent = a.auto ? 'A sessão automática falhou. Dá para tentar de novo ou rodar à mão.' : 'Sessão automática desligada (AUTO_AI=0). Cole o comando abaixo no Claude Code.';
+  }).catch(() => { m.textContent = 'Sem resposta do servidor.'; });
+}
+function wireCopy() {
+  const b = $('#cp'); if (!b) return;
+  b.onclick = () => navigator.clipboard.writeText($('#pr').textContent).then(() => toast('Comando copiado'), () => toast('Selecione e copie o texto'));
+}
+/* bloco de "pedir nova rodada" usado em vários portões */
+const redoHtml = (ph) => `<div class="sec"><span class="mono">Nova rodada (opcional)</span>
+  <textarea id="rn" placeholder="${esc(ph)}"></textarea></div>`;
+
+/* ---------- 01 envio ---------- */
+function viewEnvio(j, el) {
+  const b = j.briefing;
+  const ready = b.video && (b.texto.trim() || b.legenda || b.legendaTexto.trim());
+  el.innerHTML = `
+    <div class="sec"><span class="mono">Material</span>
+      <div class="grid g3">
+        ${dropHtml('video', 'Vídeo / decupagem', 'Arraste ou clique · .mp4 .mov', b.video)}
+        ${dropHtml('trilha', 'Trilha', 'Arraste ou clique · .mp3 .wav · opcional', b.trilha)}
+        ${dropHtml('legenda', 'Legenda .srt', 'Com o .srt a IA usa o seu texto revisado', b.legenda)}
+      </div></div>
+    <div class="sec"><span class="mono">Legenda em texto (se não tiver .srt)</span>
+      <textarea id="legt" placeholder="Cole aqui a legenda.">${esc(b.legendaTexto)}</textarea></div>
+    <div class="sec"><span class="mono">Briefing (o que foi falado)</span>
+      <textarea id="brf" style="min-height:170px" placeholder="Objetivo, tom, marca, o que não pode faltar, o público…">${esc(b.texto)}</textarea></div>
+    <div class="row"><button class="btn" id="go" ${ready ? '' : 'disabled'}>Enviar e pedir referências à IA →</button>
+      <span class="mono" id="st">${ready ? 'Pronto' : 'Falta o vídeo e o briefing (ou legenda)'}</span></div>`;
+  const save = (extra = {}) => patch({ briefing: { ...j.briefing, legendaTexto: $('#legt').value, texto: $('#brf').value, ...extra } });
+  wireDrops(el, j.id, (k, f) => save({ [k]: f }));
+  $('#legt').onchange = () => save(); $('#brf').onchange = () => save();
+  $('#go').onclick = async () => { await save(); await go('refs', 'refs', { refPick: { edicao: null, lettering: null, motion: null } }); };
+  const check = () => { const v = $('#brf').value.trim() || $('#legt').value.trim() || j.briefing.legenda; $('#go').disabled = !(j.briefing.video && v); };
+  $('#brf').oninput = check; $('#legt').oninput = check;
+}
+
+/* ---------- 02 banco de ref (portão 1) ---------- */
+function viewRefs(j, el) {
+  const O = j.refOptions || {}, pick = j.refPick || {}, own = j.refUploads || {};
+  const all = AXES.every(([k]) => pick[k]);
+  el.innerHTML = AXES.map(([k, name, q]) => `
+    <div class="axis"><div class="axis-h"><h2 style="margin:0">${name}</h2><span class="mono">${q}</span></div>
+      <div class="opts">${(O[k] || []).map((o) => `
+        <button class="opt ${pick[k] === o.id ? 'sel' : ''}" data-ax="${k}" data-id="${esc(o.id)}" aria-pressed="${pick[k] === o.id}">
+          <img src="${img(o.img)}" alt="">${o.rec ? '<span class="rec">sugestão</span>' : ''}<span class="chk">${pick[k] === o.id ? '✓' : ''}</span>
+          <b>${esc(o.title)}</b><small>${esc(o.why)}</small></button>`).join('')}
+        <label class="opt own ${pick[k] === 'own' ? 'sel' : ''}">
+          ${own[k] ? `<b>${esc(own[k].name)}</b><small>Sua referência${pick[k] === 'own' ? ' · escolhida' : ''}</small>` : '<b>+ Subir minha referência</b><small>imagem ou vídeo</small>'}
+          <input type="file" hidden data-own="${k}"></label>
+      </div></div>`).join('') + `
+    ${redoHtml('Ex.: quero opções mais limpas de lettering.')}
+    <div class="row"><button class="btn" id="ok" ${all ? '' : 'disabled'}>Aprovar referências →</button>
+      <button class="btn ghost" id="redo">Pedir outras opções</button>
+      <span class="mono">${all ? 'Uma escolha em cada eixo' : 'Escolha uma opção em cada eixo'}</span></div>`;
+  el.querySelectorAll('[data-ax]').forEach((b) => b.onclick = () => patch({ refPick: { ...pick, [b.dataset.ax]: b.dataset.id } }));
+  el.querySelectorAll('[data-own]').forEach((inp) => inp.onchange = async () => {
+    const f = inp.files[0]; if (!f) return; toast('Enviando…');
+    const r = await upload(f, `scope=job&id=${j.id}`);
+    patch({ refUploads: { ...own, [inp.dataset.own]: { name: r.name, path: r.path } }, refPick: { ...pick, [inp.dataset.own]: 'own' } });
+  });
+  // clicar na própria referência já enviada só a escolhe de novo
+  el.querySelectorAll('.opt.own').forEach((l) => l.addEventListener('click', (e) => {
+    const k = l.querySelector('[data-own]').dataset.own;
+    if (own[k] && pick[k] !== 'own') { e.preventDefault(); patch({ refPick: { ...pick, [k]: 'own' } }); }
+  }));
+  $('#ok').onclick = () => go('devolutiva', 'devolutiva', { revisionNote: '', timeline: [], devolutiva: { resumo: '', edicao: '', lettering: '', motion: '' } });
+  $('#redo').onclick = () => patch({ aiTask: 'refs', revisionNote: $('#rn').value });
+}
+
+/* ---------- 03 devolutiva (portão 2) ---------- */
+function viewDevolutiva(j, el) {
+  const d = j.devolutiva || {}, T = j.timeline || [];
+  const ok = T.filter((r) => r.status === 'ok').length, news = T.filter((r) => r.status === 'ok' && r.piece?.kind === 'new').length;
+  el.innerHTML = `
+    ${d.resumo ? `<div class="sec"><span class="mono">Leitura do material</span><div class="note">${esc(d.resumo)}</div></div>` : ''}
+    <div class="sec"><span class="mono">Definições</span>
+      <div class="grid g3">${AXES.map(([k, t], i) => `
+        <div class="card ${['', 'cream', 'green'][i]}"><span class="mono">${t}</span><p style="margin-top:10px;white-space:pre-wrap">${esc(d[k]) || '—'}</p></div>`).join('')}</div></div>
+    <div class="sec"><span class="mono">Linha do tempo · ${ok} aprovado(s) · ${T.length - ok} passado(s) · ${news} peça(s) nova(s)</span>
+      <div class="tl">${T.map((r, i) => `
+        <div class="trow ${r.status === 'pass' ? 'pass' : ''}">
+          <span class="t">${esc(r.at)}</span>
+          <div class="line">“${esc(r.line)}”</div>
+          <div class="what">${esc(r.what)}<br><span class="piece ${r.piece?.kind === 'new' ? 'new' : 'lib'}">${r.piece?.kind === 'new' ? 'nova · ' : 'biblioteca · '}${esc(r.piece?.ref || '')}${r.piece?.name ? ' ' + esc(r.piece.name) : ''}</span></div>
+          <div class="seg"><button class="${r.status === 'ok' ? 'on ok' : ''}" data-r="${i}" data-v="ok">Aprovar</button><button class="${r.status === 'pass' ? 'on no' : ''}" data-r="${i}" data-v="pass">Passar</button></div>
+          <input class="field" data-n="${i}" placeholder="Nota para este momento" value="${esc(r.note || '')}">
+        </div>`).join('') || '<p class="empty">Nenhum momento ainda.</p>'}</div></div>
+    ${redoHtml('O que mudar na devolutiva?')}
+    <div class="row"><button class="btn" id="ok" ${ok ? '' : 'disabled'}>Aprovar devolutiva → ${news ? 'stills' : 'storyboard'}</button>
+      <button class="btn ghost" id="redo">Pedir nova rodada</button></div>`;
+  const setT = (fn) => { const t = T.map((x) => ({ ...x })); fn(t); return patch({ timeline: t }); };
+  el.querySelectorAll('[data-r]').forEach((b) => b.onclick = () => setT((t) => { t[b.dataset.r].status = b.dataset.v; }));
+  el.querySelectorAll('[data-n]').forEach((i) => i.onchange = () => setT((t) => { t[i.dataset.n].note = i.value; }));
+  $('#ok').onclick = () => news ? go('stills', 'stills', { stills: [], revisionNote: '' }) : go('storyboard', 'storyboard', { revisionNote: '', storyboard: { round: 0, frames: [], flags: {} } });
+  $('#redo').onclick = () => patch({ aiTask: 'devolutiva', revisionNote: $('#rn').value });
+}
+
+/* ---------- 04 stills (portão 3) ---------- */
+function viewStills(j, el) {
+  const S = j.stills || [];
+  const all = S.length && S.every((s) => s.pick);
+  el.innerHTML = S.map((s, si) => `
+    <div class="axis"><div class="axis-h"><h2 style="margin:0">${esc(s.title)}</h2>${s.line ? `<span class="mono" style="text-transform:none;letter-spacing:0">“${esc(s.line)}”</span>` : ''}</div>
+      <div class="opts">${s.options.map((o) => `
+        <button class="opt wide ${s.pick === o.key ? 'sel' : ''}" data-s="${si}" data-k="${esc(o.key)}" aria-pressed="${s.pick === o.key}">
+          <img src="${img(o.file)}" alt=""><span class="chk">${s.pick === o.key ? '✓' : ''}</span>
+          <b>${esc(o.key)} · ${esc(o.name)}</b><small>${esc(o.desc)}</small></button>`).join('')}</div>
+      <input class="field" data-sn="${si}" placeholder="Nota para esta peça" value="${esc(s.note || '')}" style="margin-top:12px;min-height:0;padding:10px 13px">
+    </div>`).join('') + `
+    ${redoHtml('O que mudar nos stills?')}
+    <div class="row"><button class="btn" id="ok" ${all ? '' : 'disabled'}>Aprovar stills → storyboard</button>
+      <button class="btn ghost" id="redo">Pedir nova rodada</button>
+      <span class="mono">${all ? 'Escolhas feitas' : 'Escolha uma direção para cada peça'}</span></div>`;
+  const setS = (fn) => { const st = JSON.parse(JSON.stringify(S)); fn(st); return patch({ stills: st }); };
+  el.querySelectorAll('[data-k]').forEach((b) => b.onclick = () => setS((st) => { st[b.dataset.s].pick = b.dataset.k; }));
+  el.querySelectorAll('[data-sn]').forEach((i) => i.onchange = () => setS((st) => { st[i.dataset.sn].note = i.value; }));
+  $('#ok').onclick = () => go('storyboard', 'storyboard', { revisionNote: '', storyboard: { round: 0, frames: [], flags: {} } });
+  $('#redo').onclick = () => patch({ aiTask: 'stills', revisionNote: $('#rn').value });
+}
+
+/* ---------- 05 storyboard (portão 4) ---------- */
+function viewStoryboard(j, el) {
+  const sb = j.storyboard || { frames: [], flags: {} }, F = sb.frames || [], flags = sb.flags || {};
+  const marked = Object.keys(flags);
+  el.innerHTML = `
+    <div class="sec"><span class="mono">Rodada ${sb.round || 1} · ${F.length} quadros · toque num quadro para pedir ajuste</span>
+      <div class="sb">${F.map((f) => `
+        <button class="fr ${f.w > f.h ? 'wide' : ''} ${flags[f.id] !== undefined ? 'flag' : ''}" data-f="${esc(f.id)}" aria-pressed="${flags[f.id] !== undefined}" title="${esc(f.label || '')}">
+          <img src="${img(f.file)}" alt="Quadro em ${esc(f.at)}"><span class="mono">${esc(f.at)}${flags[f.id] !== undefined ? ' · ajustar' : ''}</span></button>`).join('') || '<p class="empty">Nenhum quadro ainda.</p>'}</div>
+      ${marked.length ? `<div class="flagbox"><b>${marked.length} quadro(s) marcado(s)</b>${marked.map((id) => {
+        const f = F.find((x) => x.id === id) || { at: id };
+        return `<label><span class="mono">${esc(f.at)} · ${esc(f.label || '')}</span><input class="field" data-fl="${esc(id)}" value="${esc(flags[id])}" placeholder="O que mudar neste quadro?"></label>`; }).join('')}</div>` : ''}</div>
+    <div class="row">${marked.length
+      ? `<button class="btn" id="fix">Enviar ajustes</button><span class="mono">A IA corrige só esses quadros e manda o storyboard de novo</span>`
+      : `<button class="btn" id="ok" ${F.length ? '' : 'disabled'}>Pode renderizar →</button><span class="mono">Nada marcado</span>`}</div>`;
+  const setF = (fn) => { const fl = { ...flags }; fn(fl); return patch({ storyboard: { ...sb, flags: fl } }); };
+  el.querySelectorAll('[data-f]').forEach((b) => b.onclick = () => setF((fl) => { if (fl[b.dataset.f] !== undefined) delete fl[b.dataset.f]; else fl[b.dataset.f] = ''; }));
+  el.querySelectorAll('[data-fl]').forEach((i) => i.onchange = () => setF((fl) => { fl[i.dataset.fl] = i.value; }));
+  const fx = $('#fix'); if (fx) fx.onclick = async () => {
+    // grava o texto que ainda está no campo antes de mandar
+    const fl = { ...flags }; el.querySelectorAll('[data-fl]').forEach((i) => fl[i.dataset.fl] = i.value);
+    await patch({ aiTask: 'storyboard', storyboard: { ...sb, flags: fl } });
+  };
+  const ok = $('#ok'); if (ok) ok.onclick = () => go('video', 'video', { video: { status: 'queued', file: null, aep: null, notes: '' } });
+}
+
+/* ---------- 06 vídeo ---------- */
+function viewVideo(j, el) {
+  const v = j.video || {};
+  el.innerHTML = v.file ? `
+    <div class="sec"><span class="mono">Entrega</span>
+      <video controls src="/files/${esc(v.file)}"></video>
+      ${v.notes ? `<div class="note" style="margin-top:20px">${esc(v.notes)}</div>` : ''}
+      <div class="row" style="margin-top:18px"><a class="btn" href="/files/${esc(v.file)}" download>Baixar vídeo</a>
+        ${v.aep ? `<a class="btn ghost" href="/files/${esc(v.aep)}" download>Projeto do After (.aep)</a>` : ''}</div></div>
+    <div class="sec"><span class="mono">Ajustes por minutagem</span>
+      <textarea id="rn" placeholder="Ex.: 0:24 trocar o nome da clínica · 0:49 preço maior"></textarea>
+      <div class="row" style="margin-top:12px"><button class="btn ghost" id="redo">Pedir ajustes</button></div></div>`
+    : '<p class="empty">Nenhum vídeo entregue ainda.</p>';
+  const r = $('#redo'); if (r) r.onclick = () => { const t = $('#rn').value.trim(); if (!t) return toast('Escreva o que ajustar'); patch({ aiTask: 'video', revisionNote: t }); };
+}
+
+/* ---------- referências gerais (repertório) ---------- */
+const CATS = [['edicao', 'Estilo da edição'], ['lettering', 'Estilo do lettering'], ['motion', 'Estilo de motion']];
+
+/* ---------- banco de referências ---------- */
+async function renderRefs() {
+  state.refs = await api('/api/refs');
+  $('#app').innerHTML = `
+    <div class="mono">Banco de referências</div>
+    <h1 style="margin-top:14px">O seu <em>repertório</em></h1>
+    <p class="lead">Envie uma vez, vale para todos os vídeos. A IA lê isso junto com a biblioteca de motion antes de montar as 3 opções de cada eixo.</p>
+    <div class="grid g3">${CATS.map(([k, t], i) => `
+      <div class="card ${['', 'cream', 'green'][i]}"><span class="mono">${t}</span>
+        <textarea data-rn="${k}" style="margin-top:10px;background:rgba(255,255,255,.55);color:var(--ink);border-color:transparent;${i === 0 ? 'background:#0d0f0d;color:var(--cream);border-color:var(--line)' : ''}" placeholder="Descreva o estilo, cole links de reels…">${esc(state.refs[k].notes)}</textarea>
+        <div style="margin:12px 0">${state.refs[k].files.map((f) => `<div class="mono" style="color:inherit;opacity:.8;text-transform:none;letter-spacing:0;margin-bottom:4px"><a href="/files/${esc(f.path)}" target="_blank" style="color:inherit">${esc(f.name)}</a></div>`).join('') || '<small style="opacity:.6">Sem arquivos.</small>'}</div>
+        <label class="btn sm ${i === 0 ? '' : 'ghost'}" style="display:inline-block;${i ? 'color:var(--ink);border-color:rgba(0,0,0,.35)' : ''}">+ Enviar imagem ou vídeo<input type="file" hidden multiple data-rf="${k}"></label>
+      </div>`).join('')}</div>
+    <div class="row" style="margin-top:22px"><button class="btn" id="saver">Salvar banco</button></div>`;
+  const save = () => { CATS.forEach(([k]) => state.refs[k].notes = $(`[data-rn="${k}"]`).value); return api('/api/refs', { method: 'PUT', body: JSON.stringify(state.refs) }); };
+  $('#saver').onclick = async () => { await save(); toast('Banco salvo'); };
+  document.querySelectorAll('[data-rf]').forEach((inp) => inp.onchange = async () => {
+    const k = inp.dataset.rf; await save();
+    for (const f of inp.files) { const r = await upload(f, `scope=refs&cat=${k}`); state.refs[k].files.push({ name: r.name, path: r.path }); }
+    await api('/api/refs', { method: 'PUT', body: JSON.stringify(state.refs) }); toast('Enviado'); renderRefs();
+  });
+}
+
+/* ---------- eventos globais ---------- */
+$('#refsbtn').onclick = () => { state.view = 'refs'; render(); };
+$('#newform').onsubmit = async (e) => {
+  e.preventDefault();
+  const t = $('#newtitle').value.trim(); if (!t) return;
+  const j = await api('/api/jobs', { method: 'POST', body: JSON.stringify({ title: t }) });
+  $('#newtitle').value = ''; await loadJobs(); openJob(j.id);
+};
+
+// nada pode falhar em silêncio: se um clique não salvar, o editor fica sabendo
+window.addEventListener('unhandledrejection', (e) => toast('Não salvou: ' + (e.reason && e.reason.message || 'servidor fora do ar') + ' · recarregue a página'));
+window.addEventListener('error', () => toast('Erro na tela · recarregue a página'));
+
+// aba aberta antes de uma atualização da interface: recarrega sozinha (sem atropelar quem digita)
+let pageSig = null;
+setInterval(async () => {
+  try {
+    const t = await (await fetch('/', { cache: 'no-store' })).text();
+    const sig = t.length + ':' + t.slice(-400);
+    if (pageSig && sig !== pageSig && !/INPUT|TEXTAREA/.test(document.activeElement?.tagName || '')) location.reload();
+    pageSig = sig;
+  } catch {}
+}, 8000);
+
+// atualiza sozinho quando a IA escreve no job.json (sem atropelar quem está digitando)
+setInterval(async () => {
+  try {
+    await loadJobs();
+    if (state.job && state.view === 'job') {
+      const fresh = await api('/api/jobs/' + state.job.id);
+      const sig = JSON.stringify(fresh);
+      if (sig !== lastSig) {
+        const typing = document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName);
+        const wasWaiting = state.job.aiTask && !fresh.aiTask;
+        state.job = fresh; lastSig = sig;
+        if (wasWaiting) { state.step = fresh.stage; toast('A IA terminou'); }
+        if (!typing) render(); else renderSide();
+      }
+    } else renderSide();
+  } catch {}
+}, 2500);
+
+(async () => { await loadJobs(); if (state.jobs[0]) openJob(state.jobs[0].id); else render(); })();
+</script>
+</body>
+</html>
