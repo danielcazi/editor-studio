@@ -28,7 +28,7 @@ Precisa de internet na hora de renderizar: as fontes (Inter, JetBrains Mono, Com
 Pegue o projeto pelo GitHub (ou descompacte o pacote `insula-edit-kit`, se recebeu o zip) e rode o instalador na pasta dele:
 
 ```bash
-git clone <URL do repositório> videos-claude
+git clone https://github.com/danielcazi/editor-studio.git videos-claude
 cd videos-claude
 bash install.sh          # completo (~1,5 GB: inclui transcrição e recorte de fundo)
 # ou
