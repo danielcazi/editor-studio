@@ -93,4 +93,4 @@ O indexador `tools/index_refs.mjs` usa ffprobe, detecção de cortes (`select='g
 2. Descreva a alteração desejada; antes de editar, confirme com o usuário o escopo.
 3. Depois de mexer em `server.js`, reinicie o servidor (com o job parado) e regenere o pacote com `bash editor-studio/kit/make-kit.sh` se a mudança deve ir para outras máquinas.
 
-> Transcrição completa da conversa de origem: `/Users/danielcazi/.claude/projects/-Users-danielcazi-Connect-hub-videos-claude/6a6cd0fb-4205-4770-8816-2e3d0228dcbf.jsonl`
+> Transcrição completa da conversa de origem: sessão `6a6cd0fb-4205-4770-8816-2e3d0228dcbf` na pasta de projetos do Claude Code da máquina original (`~/.claude/projects/`).

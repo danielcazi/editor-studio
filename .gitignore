@@ -18,3 +18,6 @@ editor-studio/tools/vision_cutout
 
 # configuração pessoal do Claude Code
 .claude/settings.local.json
+
+# painel publicado de cada máquina
+editor-studio/painel.local.md

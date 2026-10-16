@@ -5,7 +5,8 @@ Quando o editor aprova um portão, a interface define `stage` e `aiTask` com a t
 O Claude executa **só essa tarefa**, grava o resultado no `job.json` e zera `aiTask` (`null`).
 A interface atualiza sozinha. Nunca avance de etapa por conta própria: quem muda `stage` é o editor.
 
-**Onde o editor decide:** no painel publicado "Fluxo de Edição Ínsula" (https://claude.ai/artifact/6nSUUA6Ngo6AmJJAoE5zz5), não no localhost.
+**Onde o editor decide:** por padrão, na interface local (`node editor-studio/server.js`, http://localhost:4173), que grava direto no `job.json`.
+Se existir `editor-studio/painel.local.md` (fora do git, um por máquina), o editor decide no painel publicado cujo link está nesse arquivo, e não no localhost:
 O painel guarda cada job no banco do artifact, documento `jobs/<id>` (mesmas chaves do `job.json`; imagens são ids de asset do artifact).
 Quando o editor disser "segue": leia `jobs/<id>` com `ArtifactData get`, copie as escolhas (`refPick`, `timeline`, `stills[].pick`, notas, `storyboard.flags`, `revisionNote`, `stage`, `aiTask`) para o `job.json`, execute a tarefa, suba as imagens novas com `Artifact` (`asset: true`) e grave o resultado de volta no documento (`ArtifactData update` com `if_version`, `aiTask: null`).
 O `editor-studio` local continua sendo o motor e o arquivo de trabalho.
