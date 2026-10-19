@@ -14,10 +14,15 @@ const PR = { ...window.PARAMS, ...(q ? JSON.parse(decodeURIComponent(escape(atob
 const C = { ...window.PARAMS.colors, ...(PR.colors || {}) };
 Object.entries(C).forEach(([k, v]) => document.documentElement.style.setProperty('--' + k, v));
 
+/* tempo ancorado em batida (opcional): PARAMS.beats = conteúdo do beats.json (lib/build-beats.mjs).
+   Qualquer tempo aceita segundos, { beat: n }, { bar: n, beat: b } ou { drop: +n }. Sem beats, só segundos. */
+const GRID = PR.beats && window.BeatGrid ? window.BeatGrid.from(PR.beats) : null;
+const at = s => typeof s === 'number' ? s : GRID ? GRID.resolve(s, 30) : 0;
+
 const V = innerHeight > innerWidth;
 const W = V ? 1080 : 1920, H = V ? 1920 : 1080;
-/* área segura vertical: tudo entre y 230 e 1520, longe do trilho de botões à direita */
-const LY = V ? { x: 90, head: [230, 96], num: [560, 420], cap: 1060 } : { x: 160, head: [150, 84], num: [330, 360], cap: 760 };
+/* margem Meta Ads (motion-studio/qa/safezone.json): tudo entre x 65–1015 e y 270–1248 */
+const LY = V ? { x: 90, head: [280, 96], num: [560, 420], cap: 1060 } : { x: 160, head: [150, 84], num: [330, 360], cap: 760 };
 
 const head = $('#head'), num = $('#num'), cap = $('#cap');
 head.textContent = PR.headline; cap.textContent = PR.caption;
@@ -31,7 +36,8 @@ function paint(t) {
   const k = P(t, .6, PR.duration - .8, E.io3);
   num.textContent = Math.round(lerp(PR.from, PR.to, k)) + PR.suffix;
   num.style.opacity = P(t, .5, .8);
-  cap.style.opacity = P(t, 1, 1.4);
+  const c0 = at(PR.captionAt ?? 1);
+  cap.style.opacity = P(t, c0, c0 + .4);
 }
 
 window.DURATION = PR.duration; window.FPS = 30; window.SFX = [];

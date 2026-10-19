@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Player · Editor Studio</title>
+<style>
+  :root { --bg:#141413; --panel:#1f1e1d; --line:#34322f; --ink:#faf9f5; --mute:#a8a59b; --acc:#8d8df0; --flag:#ff6a4d; --beat:#5b5a55; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.4 Inter, system-ui, sans-serif; }
+  body { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; }
+  header { display: flex; gap: 16px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  header a { color: var(--acc); text-decoration: none; }
+  header h1 { font-size: 15px; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  header span { color: var(--mute); }
+  main { display: grid; grid-template-columns: 1fr 340px; min-height: 0; }
+  #stageWrap { position: relative; min-height: 0; display: grid; place-items: center; overflow: hidden; background: #0c0c0b; }
+  #frame { position: absolute; left: 50%; top: 50%; border: 0; transform-origin: 0 0; background: #000; }
+  #msg { position: absolute; color: var(--mute); }
+  aside { border-left: 1px solid var(--line); background: var(--panel); overflow: auto; min-height: 0; display: flex; flex-direction: column; }
+  aside h2 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 12px 14px 6px; }
+  .row { display: grid; grid-template-columns: 42px 48px 1fr; gap: 8px; padding: 7px 14px; cursor: pointer; border-left: 3px solid transparent; }
+  .row:hover { background: #2a2927; }
+  .row.on { border-left-color: var(--acc); background: #2a2927; }
+  .row b { color: var(--acc); font-weight: 600; } .row i { font-style: normal; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .row .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row.fl b { color: var(--flag); }
+  .flag { padding: 8px 14px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; }
+  .flag b { color: var(--flag); } .flag button { grid-row: 1; grid-column: 2; }
+  .flag p { grid-column: 1 / 3; color: var(--ink); }
+  #form { padding: 12px 14px; border-top: 1px solid var(--line); display: none; gap: 8px; flex-direction: column; background: #262523; }
+  #form.open { display: flex; }
+  textarea { width: 100%; min-height: 64px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: inherit; resize: vertical; }
+  button { background: #34322f; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  button:hover { background: #413f3b; } button.pri { background: var(--acc); color: #111; border-color: var(--acc); font-weight: 600; } button.dng { color: var(--flag); }
+  footer { border-top: 1px solid var(--line); padding: 10px 16px 14px; background: var(--panel); }
+  #bar { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  #time { font-variant-numeric: tabular-nums; min-width: 190px; color: var(--mute); } #time b { color: var(--ink); font-weight: 600; }
+  #tl { width: 100%; height: 116px; display: block; cursor: ew-resize; touch-action: none; border-radius: 8px; background: #181716; }
+  .hint { color: var(--mute); font-size: 12px; margin-left: auto; }
+  #guide { position: absolute; pointer-events: none; display: none; }
+  #guide.on { display: block; }
+  #guide i { position: absolute; background: rgba(255, 60, 60, .28); }
+  #guide b { position: absolute; border: 4px dashed rgba(255, 255, 255, .85); box-shadow: 0 0 0 2px rgba(0,0,0,.35); }
+  #guide span { position: absolute; left: 12px; top: 10px; font: 600 26px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 4px 12px; border-radius: 8px; }
+  button.on { border-color: var(--acc); color: var(--acc); }
+  body.embed { grid-template-rows: 1fr auto; } body.embed header { display: none; }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; grid-template-rows: 1fr 220px; } aside { border-left: 0; border-top: 1px solid var(--line); } .hint { display: none; } }
+</style>
+</head>
+<body>
+<header><a href="/">← Editor Studio</a><h1 id="title">Player</h1><span id="meta"></span></header>
+<main>
+  <div id="stageWrap"><iframe id="frame" title="filme"></iframe><div id="guide"></div><div id="msg">Carregando o filme…</div></div>
+  <aside>
+    <h2>Momentos da timeline</h2><div id="rows"></div>
+    <h2>Sinalizações</h2><div id="flags"></div>
+    <div id="form"><div id="ftarget"></div><textarea id="fnote" placeholder="O que mudar neste momento?"></textarea>
+      <div style="display:flex;gap:8px"><button class="pri" id="fsave">Salvar sinalização</button><button id="fcancel">Cancelar</button></div></div>
+  </aside>
+</main>
+<footer>
+  <div id="bar">
+    <button id="play" title="Espaço">▶ Tocar</button><button id="prev" title="←">◀ quadro</button><button id="next" title="→">quadro ▶</button>
+    <button id="flagBtn" title="F">⚑ Sinalizar</button><button id="guideBtn" title="M">▭ Margem</button><span id="time"></span>
+    <span class="hint">Espaço toca · ← → 1 quadro (Shift: 10) · ↑ ↓ momento · F sinaliza · M margem · barras: quanto cada peça fica na tela (amarelo palavra, roxo painel, verde objeto)</span>
+  </div>
+  <canvas id="tl"></canvas>
+</footer>
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const id = location.pathname.split('/').filter(Boolean)[1];
+const qs = new URLSearchParams(location.search);
+const FW = +(qs.get('w') || 1080), FH = +(qs.get('h') || 1920);
+if (qs.get('embed')) document.body.classList.add('embed');
+const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = t => { const m = Math.floor(t / 60), s = t - m * 60; return m + ':' + s.toFixed(2).padStart(5, '0'); };
+const getJob = () => fetch('/api/jobs/' + id).then(r => r.json());
+
+let job, win, FPS = 30, DUR = 0, cur = 0, playing = false, peaks = [], beats = [], audio = null;
+let rows = [];   // momentos da timeline { id, t, line, what }
+let pieces = []; // permanência: { id, slot, a, b, curta } (mesma conta do check_timeline.js)
+function calcPieces() {
+  const live = rows.filter(r => !/^pass/.test(r.status || '') && !r.dentro);
+  pieces = live.map((r, i) => {
+    const slot = r.slot || 'painel', nx = live[i + 1];
+    const nxs = live.slice(i + 1).find(x => (x.slot || 'painel') === slot);
+    let b = r.hold != null ? r.t + r.hold : slot === 'palavra' ? (nxs ? nxs.t : DUR) : (nx ? nx.t : DUR);
+    const tom = live.slice(i + 1).find(x => (x.slot || 'painel') === slot && x.t < b - 1e-6);
+    if (tom) b = tom.t; b = Math.min(b, DUR || b);
+    return { id: r.id, slot, a: r.t, b, curta: b - r.t < (slot === 'palavra' ? 1.2 : slot === 'transicao' ? 0 : 3) - 1e-6 && (DUR - r.t) >= 3 };
+  });
+}
+
+/* ---------- filme ---------- */
+const frame = $('#frame');
+function fit() {
+  const wrap = $('#stageWrap'), k = Math.min(wrap.clientWidth / FW, wrap.clientHeight / FH) * .98;
+  frame.style.width = FW + 'px'; frame.style.height = FH + 'px';
+  frame.style.transform = `scale(${k}) translate(-50%, -50%)`; frame.style.transformOrigin = '0 0';
+  frame.style.left = '50%'; frame.style.top = '50%';
+  const g = $('#guide'); g.style.width = FW + 'px'; g.style.height = FH + 'px'; g.style.left = '50%'; g.style.top = '50%';
+  g.style.transform = frame.style.transform; g.style.transformOrigin = '0 0';
+}
+/* guia da margem de segurança (motion-studio/qa/safezone.json) */
+async function buildGuide() {
+  const z = await fetch('/api/jobs/' + id + '/safezone').then(r => r.json()).catch(() => null);
+  if (!z) { $('#guideBtn').disabled = true; return; }
+  const kx = FW / z.w, ky = FH / z.h, T = z.top * ky, B = z.bottom * ky, L = z.left * kx, R = z.right * kx;
+  $('#guide').innerHTML = `<i style="left:0;top:0;width:${FW}px;height:${T}px"></i><i style="left:0;top:${B}px;width:${FW}px;height:${FH - B}px"></i>`
+    + `<i style="left:0;top:${T}px;width:${L}px;height:${B - T}px"></i><i style="left:${R}px;top:${T}px;width:${FW - R}px;height:${B - T}px"></i>`
+    + `<b style="left:${L}px;top:${T}px;width:${R - L}px;height:${B - T}px"></b><span>${esc(z.nome || z.perfil)}</span>`;
+  setGuide(store.get('guide') !== '0');
+}
+function setGuide(on) { $('#guide').classList.toggle('on', on); $('#guideBtn').classList.toggle('on', on); store.set('guide', on ? '1' : '0'); }
+$('#guideBtn').onclick = () => setGuide(!$('#guide').classList.contains('on'));
+let busy = false, want = null;
+async function show(t) {
+  want = t; if (busy) return; busy = true;
+  while (want != null) { const x = want; want = null; try { await win.seek(Math.floor(x * FPS + 1e-6) / FPS); } catch (e) { console.error(e); } }
+  busy = false;
+}
+function setTime(t, fromPlay) {
+  cur = Math.max(0, Math.min(DUR - 1 / FPS, t));
+  show(cur); drawTl(); updateUi();
+  if (!fromPlay && playing && audio) audio.currentTime = cur;
+}
+
+/* ---------- reprodução ---------- */
+let t0 = 0, clock0 = 0;
+function play() {
+  if (cur >= DUR - 1 / FPS) cur = 0;
+  playing = true; t0 = cur; clock0 = performance.now(); $('#play').textContent = '⏸ Pausar';
+  if (audio) { audio.currentTime = cur; audio.play().catch(() => {}); }
+  requestAnimationFrame(tick);
+}
+function pause() { playing = false; $('#play').textContent = '▶ Tocar'; if (audio) audio.pause(); }
+function tick() {
+  if (!playing) return;
+  const t = t0 + (performance.now() - clock0) / 1000;
+  if (t >= DUR) { setTime(DUR, true); pause(); return; }
+  if (audio && Math.abs(audio.currentTime - t) > .2) audio.currentTime = t;
+  setTime(t, true); requestAnimationFrame(tick);
+}
+$('#play').onclick = () => playing ? pause() : play();
+const step = n => { const was = playing; if (was) pause(); setTime(Math.round(cur * FPS) / FPS + n / FPS); };
+$('#prev').onclick = () => step(-1); $('#next').onclick = () => step(1);
+
+/* ---------- linha do tempo ---------- */
+const cv = $('#tl'), ctx = cv.getContext('2d');
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function drawTl() {
+  const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (cv.width !== W * dpr || cv.height !== H * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  if (!DUR) return;
+  const X = t => t / DUR * W, mid = H * .64, amp = H * .28;
+  ctx.fillStyle = css('--beat');                                           // batidas
+  for (const b of beats) if (b < DUR) ctx.fillRect(Math.round(X(b)), H - 14, 1, 14);
+  ctx.fillStyle = '#6a6962';                                               // onda sonora
+  const n = peaks.length;
+  for (let i = 0; i < n; i++) { const h = Math.max(1, peaks[i] * amp * 2.2); ctx.fillRect(i / n * W, mid - h / 2, Math.max(1, W / n - .5), h); }
+  const fl = (job.storyboard && job.storyboard.flags) || {};
+  const LANE = { palavra: 0, painel: 1, objeto: 2 }, LC = ['#e6c84f', '#8d8df0', '#5fc7a6'];  // permanência de cada peça
+  for (const p of pieces) { const k = LANE[p.slot] ?? 1; ctx.fillStyle = LC[k]; ctx.globalAlpha = p.curta ? 1 : .8;
+    ctx.fillRect(X(p.a) + 1, 16 + k * 7, Math.max(2, X(p.b) - X(p.a) - 2), 5);
+    if (p.curta) { ctx.fillStyle = css('--flag'); ctx.fillRect(X(p.a) + 1, 16 + k * 7 + 5, Math.max(2, X(p.b) - X(p.a) - 2), 1); } }
+  ctx.globalAlpha = 1;
+  ctx.font = '11px Inter, sans-serif'; ctx.textBaseline = 'top';
+  for (const r of rows) {                                                  // momentos
+    const x = X(r.t), flagged = fl[r.id] != null;
+    ctx.fillStyle = flagged ? css('--flag') : css('--acc'); ctx.fillRect(Math.round(x), 0, 1, H - 14);
+    ctx.fillText(r.id, x + 3, 2);
+  }
+  ctx.fillStyle = css('--ink'); ctx.fillRect(Math.round(X(cur)) - 1, 0, 2, H);   // cabeça de leitura
+}
+function tFromEvent(e) { const r = cv.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * DUR; }
+let drag = false;
+cv.addEventListener('pointerdown', e => { drag = true; cv.setPointerCapture(e.pointerId); setTime(tFromEvent(e)); if (playing) { t0 = cur; clock0 = performance.now(); } });
+cv.addEventListener('pointermove', e => { if (drag) { setTime(tFromEvent(e)); if (playing) { t0 = cur; clock0 = performance.now(); } } });
+cv.addEventListener('pointerup', () => { drag = false; });
+addEventListener('resize', () => { fit(); drawTl(); });
+
+/* ---------- painel ---------- */
+const sceneAt = t => { let r = rows[0]; for (const x of rows) if (x.t <= t + 1e-6) r = x; return r; };
+function updateUi() {
+  const r = sceneAt(cur);
+  $('#time').innerHTML = `<b>${fmt(cur)}</b> / ${fmt(DUR)} · quadro ${Math.round(cur * FPS)}`;
+  document.querySelectorAll('.row').forEach(el => el.classList.toggle('on', r && el.dataset.id === r.id));
+}
+function renderRows() {
+  const fl = (job.storyboard && job.storyboard.flags) || {};
+  $('#rows').innerHTML = rows.map(r => `<div class="row${fl[r.id] != null ? ' fl' : ''}" data-id="${esc(r.id)}" data-t="${r.t}"><b>${esc(r.id)}</b><i>${fmt(r.t)}</i><span class="t" title="${esc(r.what || '')}">${esc(r.line || r.what || '')}</span></div>`).join('');
+  $('#rows').querySelectorAll('.row').forEach(el => el.onclick = () => { const was = playing; if (was) pause(); setTime(+el.dataset.t); });
+  const keys = Object.keys(fl);
+  $('#flags').innerHTML = keys.length ? keys.map(k => `<div class="flag"><b>${esc(k)}</b><button class="dng" data-k="${esc(k)}">remover</button><p>${esc(fl[k])}</p></div>`).join('') : '<p style="padding:6px 14px;color:var(--mute)">Nenhuma.</p>';
+  $('#flags').querySelectorAll('button').forEach(b => b.onclick = () => saveFlags(k => { delete k[b.dataset.k]; }));
+}
+async function saveFlags(mutate) {
+  job = await getJob();                                               // relê para não pisar no que o Claude escreveu
+  const flags = { ...((job.storyboard && job.storyboard.flags) || {}) }; mutate(flags);
+  const r = await fetch('/api/jobs/' + id, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ storyboard: { ...(job.storyboard || {}), flags } }) });
+  job = await r.json(); renderRows(); drawTl();
+}
+function openForm() {
+  if (playing) pause();
+  const r = sceneAt(cur); $('#form').dataset.id = r.id; $('#form').dataset.t = cur;
+  $('#ftarget').innerHTML = `Momento <b style="color:var(--flag)">${esc(r.id)}</b> · ${esc(r.line || r.what || '')}<br><span style="color:var(--mute)">no instante ${fmt(cur)} (quadro ${Math.round(cur * FPS)})</span>`;
+  $('#form').classList.add('open'); $('#fnote').value = ''; $('#fnote').focus();
+}
+$('#flagBtn').onclick = openForm; $('#fcancel').onclick = () => $('#form').classList.remove('open');
+$('#fsave').onclick = async () => {
+  const note = $('#fnote').value.trim(); if (!note) return;
+  const k = $('#form').dataset.id, tag = `[${fmt(+$('#form').dataset.t)}] ${note}`;
+  await saveFlags(f => { f[k] = f[k] ? f[k] + ' · ' + tag : tag; });
+  $('#form').classList.remove('open');
+};
+addEventListener('keydown', e => {
+  if (/^(TEXTAREA|INPUT)$/.test(e.target.tagName)) { if (e.key === 'Escape') $('#fcancel').click(); return; }
+  if (e.code === 'Space') { e.preventDefault(); $('#play').click(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); step(e.shiftKey ? -10 : -1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); step(e.shiftKey ? 10 : 1); }
+  else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    e.preventDefault(); const i = rows.indexOf(sceneAt(cur)), j = Math.max(0, Math.min(rows.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)));
+    if (playing) pause(); setTime(rows[j].t);
+  } else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); openForm(); }
+  else if (e.key === 'm' || e.key === 'M') { e.preventDefault(); $('#guideBtn').click(); }
+});
+
+/* ---------- início ---------- */
+(async () => {
+  job = await getJob();
+  $('#title').textContent = job.title || id; $('#meta').textContent = `${job.id} · ${job.stage || ''}`;
+  rows = ((job.timeline || []).filter(r => typeof r.t === 'number')).map(r => ({ id: r.id, t: r.t, line: r.line, what: r.what, slot: r.slot, hold: r.hold, status: r.status, dentro: r.dentro })).sort((a, b) => a.t - b.t);
+  buildGuide();
+  renderRows();
+  fit();
+  frame.src = `/files/videos/${id}/filme/index.html`;
+  await new Promise(ok => frame.addEventListener('load', ok, { once: true }));
+  win = frame.contentWindow;
+  try { await win.__ready; } catch (e) { $('#msg').textContent = 'O filme não ficou pronto: ' + e.message; return; }
+  FPS = win.FPS || 30; DUR = win.DURATION || 0; $('#msg').remove(); calcPieces();
+  const t0s = +sessionStorage.getItem('pt-' + id) || 0;
+  fetch('/api/jobs/' + id + '/wave').then(r => r.json()).then(w => {
+    const mx = Math.max(.001, ...(w.peaks || [0]));
+    peaks = (w.peaks || []).map(v => v / mx);
+    if (w.src) { audio = new Audio('/files/' + w.src); audio.preload = 'auto'; }
+    drawTl();
+  }).catch(() => {});
+  fetch(`/files/videos/${id}/beats.json`).then(r => r.ok ? r.json() : null).then(b => { if (b && b.beats) { beats = b.beats; drawTl(); } }).catch(() => {});
+  setTime(t0s < DUR ? t0s : 0);
+  setInterval(() => { try { sessionStorage.setItem('pt-' + id, String(cur)); } catch {} }, 1000);
+})();
+/* a interface do Editor Studio avisa quando o job muda (sinalizações marcadas lá) */
+addEventListener('message', async e => { if (e.origin === location.origin && e.data === 'job') { job = await getJob(); renderRows(); drawTl(); } });
+})();
+</script>
+</body>
+</html>

@@ -6,8 +6,16 @@
       "cmd": ".venv/bin/python editor-studio/tools/transcribe.py {audio} {saida}",
       "contrato": "Entrada: áudio WAV. Saída: JSON { duration, segments: [ { start, end, text, words: [ { w, s, e } ] } ] }. Se o job já tem .srt em briefing.legenda, use o .srt e pule este encaixe.",
       "alternativas": [
-        { "tipo": "skill", "skill": "embedded-captions", "nota": "skill HyperFrames em motion-studio/.agents/skills; transcreve e já desenha a legenda" },
-        { "tipo": "skill", "skill": "media-use", "nota": "transcrição pelo motor de áudio da HyperFrames" }
+        {
+          "tipo": "skill",
+          "skill": "embedded-captions",
+          "nota": "skill HyperFrames em motion-studio/.agents/skills; transcreve e já desenha a legenda"
+        },
+        {
+          "tipo": "skill",
+          "skill": "media-use",
+          "nota": "transcrição pelo motor de áudio da HyperFrames"
+        }
       ]
     },
     "recorte": {
@@ -15,8 +23,16 @@
       "cmd": ".venv/bin/python editor-studio/tools/cutout.py {entrada} {saida}",
       "contrato": "Entrada: pasta com quadros PNG. Saída: pasta com PNG RGBA de mesmo nome e tamanho (pessoa com alfa).",
       "alternativas": [
-        { "tipo": "script", "cmd": "editor-studio/tools/vision_cutout {entrada} {saida} {primeiro} {ultimo}", "nota": "Apple Vision, só macOS, bem mais rápido; compile antes: swiftc -O editor-studio/tools/vision_cutout.swift -o editor-studio/tools/vision_cutout (lê JPG 00001.jpg…)" },
-        { "tipo": "skill", "skill": "media-use", "nota": "remoção de fundo da HyperFrames" }
+        {
+          "tipo": "script",
+          "cmd": "editor-studio/tools/vision_cutout {entrada} {saida} {primeiro} {ultimo}",
+          "nota": "Apple Vision, só macOS, bem mais rápido; compile antes: swiftc -O editor-studio/tools/vision_cutout.swift -o editor-studio/tools/vision_cutout (lê JPG 00001.jpg…)"
+        },
+        {
+          "tipo": "skill",
+          "skill": "media-use",
+          "nota": "remoção de fundo da HyperFrames"
+        }
       ]
     },
     "leitura": {
@@ -33,6 +49,63 @@
       "tipo": "script",
       "cmd": "node motion-studio/render.mjs {filme} --w 1080 --h 1920",
       "contrato": "Entrada: pasta do filme HTML (videos/<id>/filme) com window.seek(t). Saída: quadros em <filme>/out/frames."
+    },
+    "aep": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/ae/make_jsx.mjs {job} --aep {saida}",
+      "contrato": "Entrada: job com filme HTML em videos/<id>/filme (cada peça = filho direto de #s-<id>, #rig, #person, #back #b-<id>, #wipe; window.SCENES com b = t + hold) e sequências em filme/ae/V/{base,bg,person,gfx}. Saída: filme/ae/build_comp.jsx (comp híbrida: peças de texto/caixa 2D nativas com null e keyframes quadro a quadro + Drop Shadow; peças com 3D, gradiente, SVG ou conteúdo animado por dentro como ProRes 4444 com alfa em filme/ae/V/clips; pessoa e vídeo base por trecho; cortina em shape) e filme/ae/ae_report.json (nativas x clipes com motivo, fontes usadas e fontes_faltando)."
+    },
+    "area_segura": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/check_safezone.mjs {job}",
+      "contrato": "Entrada: job com filme HTML e recorte da pessoa em filme/assets/mseq. Saída: lista de textos que cobrem a cabeça (com sugestão de dy) ou saem da área segura; código 1 se houver. Aproximação: o alfa é lido sem a escala que o filme aplica à pessoa."
+    },
+    "dados": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/dados.mjs {job} check",
+      "contrato": "videos/<id>/dados.json é a fonte única dos números (valor, texto, ilustrativo). `build` gera filme/dados.js (window.DADOS) lido pelos módulos via KIT.dado(chave, padrão); `check` lista os ilustrativos e acusa valores divergentes no código do filme."
+    },
+    "conferir_storyboard": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/check_storyboard.mjs {job}",
+      "contrato": "Lê o texto visível do filme em cada quadro (sem OCR). Acusa −0%, NaN, undefined, null, quadro sem texto e porcentagem fora de dados.json. Código 1 se achar algo."
+    },
+    "mix": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/mix_audio.mjs {job}",
+      "contrato": "Voz do vídeo base + trilha opcional (briefing.trilha, sidechain) + SFX opcional (--sfx), loudnorm em dois passes para -14 LUFS. Saída: videos/<id>/out/mix.m4a."
+    },
+    "formatos": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/export_formats.mjs {job}",
+      "contrato": "A partir de out/final.mp4 (9:16) gera final-4x5.mp4 e final-1x1.mp4 (recorte, --modo crop) ou com fundo desfocado (--modo blur). 16x9 só com fundo desfocado."
+    },
+    "pacote_aep": {
+      "tipo": "script",
+      "cmd": "node editor-studio/tools/ae/pack_aep.mjs {job} --copy",
+      "contrato": "Copia filme/ae e o .aep para out/pacote-ae/ trocando os links simbólicos por arquivos, para o projeto abrir sem o job de origem. Sem --copy só relata links e fontes."
+    },
+    "catalogo": {
+      "tipo": "script",
+      "cmd": "node motion-studio/library/catalog.mjs",
+      "contrato": "Sem --write mostra os módulos de library/modules/ que não estão em library.json; com --write [--only I015,I016] cria as entradas M##, gera miniaturas e a galeria. Usa campos opcionais da ideia (kind, what, vars, thumbQuery, thumbT)."
+    },
+    "beats": {
+      "tipo": "script",
+      "cmd": "node motion-studio/lib/build-beats.mjs {audio} --out videos/{id}/beats.json",
+      "contrato": "Entrada: qualquer áudio que o ffmpeg leia (a trilha, não a voz). Saída: JSON { bpm, beats[], downbeats[], beatSec, barSec, downbeatSec, dropBar, dropSec, durationSec, bars[] }, compatível com os beats.json antigos (bpm + beats). No filme, carregue motion-studio/lib/beatgrid.js e use BeatGrid.from(json): beat(n), bar(n,b), drop(), snap(t,'beat'|'half'|'bar',fps), pulse(t), resolve({beat:n}). Downbeat e drop só são confiáveis em música; em voz use apenas bpm e beats. Se existir videos/<id>/beats.json, o encaixe qa avisa SFX e cenas fora da batida (±1 quadro, no meio tempo).",
+      "alternativas": [
+        {
+          "tipo": "script",
+          "cmd": "npx hyperframes beats <projeto>",
+          "nota": "só tempo e força por batida, sem compasso nem drop; exige <audio data-timeline-role=\"music\"> num projeto HyperFrames"
+        }
+      ]
+    },
+    "qa": {
+      "tipo": "script",
+      "cmd": "node motion-studio/qa/check.mjs videos/{id}/filme --no-fail",
+      "contrato": "Roda nos quadros de storyboard.frames do job (ou --times id:t,... / --step N). Grava videos/<id>/out/qa.json { erros, avisos, findings: [ { regra, quadro, nivel: 'erro'|'aviso', msg } ] } e imprime a lista. Regras: titulo-rosto (texto atrás da pessoa, texto na cabeça, painel na cabeça), area-segura (margem de motion-studio/qa/safezone.json, padrão Meta Ads: x 65–1015, y 270–1248; texto fora é erro), tela-cheia (vídeo base menor que o quadro, cópia desfocada atrás ou máscara nas bordas é erro), numeros (sinal com zero, número ainda animando, valores de videos/<id>/qa.expect.json), fonte (serifado/itálico pedidos na devolutiva ou fontes de qa.expect.json), frase-repetida (4 palavras iguais em quadros diferentes). Sem --no-fail sai com 1 se houver 'erro'. Complementa check_safezone, check_storyboard e check_timeline (que olham a timeline, não os quadros do storyboard)."
     }
   }
 }

@@ -92,7 +92,6 @@ videos-claude/   (ou insula-edit-kit/, no zip)
    ├─ CLAUDE.md · render.mjs     regras e motor de render (filme = função do tempo)
    ├─ library/                   catálogo de módulos de motion (library.json, ideas.json, thumbs, galeria)
    ├─ .agents/skills · .claude/skills   skills (motion-mod, hyperframes e outras)
-   └─ exemplos/                  ads-03 (filme completo + mix de áudio) e 04-cazi-after (camadas e JSX do After)
 ```
 
 ## 6. Se algo falhar

@@ -1,7 +1,7 @@
 // node library/build.mjs [--force] [--only M05,M07]
 // Gera as miniaturas que faltam (library/thumbs/<id>.jpg) e reescreve library/gallery.html
 // com library.json + ideas.json embutidos (file:// não deixa a página ler JSON).
-import { chromium } from 'playwright';
+import { chromium } from '../lib/pw.mjs';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';

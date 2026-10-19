@@ -76,6 +76,12 @@ textarea:focus,.field:focus,.newjob input:focus{outline:2px solid var(--yellow);
 .wait{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);animation:p 1.2s infinite}
 @keyframes p{50%{opacity:.25}}
+.prog{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.prog .mono{color:var(--yellow);margin-bottom:8px}
+.prog .now{font-size:14px;line-height:1.45;overflow-wrap:anywhere}
+.prog .now::before{content:'→ ';color:var(--yellow)}
+.prog ol{list-style:none;padding:0;margin:8px 0 0;font-size:12.5px;line-height:1.6;color:var(--dim)}
+.prog ol li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 code,pre{font-family:var(--mono);font-size:12.5px}
 pre{background:#0d0f0d;border:1px solid var(--line);border-radius:12px;padding:14px;white-space:pre-wrap;color:#c9ccbf;line-height:1.55}
 .hl{color:var(--yellow)}
@@ -121,6 +127,9 @@ video{width:100%;max-width:380px;border-radius:14px;background:#000;display:bloc
 .seg button.on.ok{background:var(--green);color:var(--ink)}
 .seg button.on.no{background:#3a3e3a;color:var(--cream)}
 .sb{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.player{position:relative;height:min(78vh,860px);min-height:520px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0c0c0b}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#body.locked .player{pointer-events:auto}
 .fr{background:none;border:0;padding:0;text-align:left;cursor:pointer;display:grid;gap:5px;color:var(--cream)}
 .fr img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:9px;border:2px solid transparent;display:block;background:#0d0f0d}
 .fr.wide img{aspect-ratio:16/9}
@@ -223,6 +232,11 @@ function render() {
   renderSide();
   if (state.view === 'refs') return renderRefs();
   const j = state.job;
+  if (j && state.view === 'job' && state.step === 'storyboard' && $('#plFrame') && $('#sbRest') && state.plKey === playerKey(j)) {
+    const mono = document.querySelector('#app > .mono'); if (mono) mono.textContent = `${j.title} · ${j.aiTask ? 'IA trabalhando em ' + (TASK_WHAT[j.aiTask] || j.aiTask) : 'aguardando você'}`;
+    sbRest(j);
+    return;
+  }
   if (!j) { $('#app').innerHTML = `<div class="mono">Editor Studio</div><h1 style="margin-top:14px">Motion <em>no piloto</em> automático</h1><p class="lead">Crie um vídeo na barra lateral para começar. A IA só avança quando você aprova cada etapa.</p>`; return; }
   if (stageIdx(state.step) < 0) state.step = 'envio';
   const cur = Math.max(0, stageIdx(j.stage));
@@ -267,19 +281,45 @@ function wireDrops(root, jobId, onDone) {
 function waitBox(j) {
   const prompt = `Leia editor-studio/WORKFLOW.md e execute a tarefa "${j.aiTask}" do job ${j.id} (videos/${j.id}/job.json).`;
   const err = j.aiError ? `<div class="empty" style="color:#b3261e">${esc(j.aiError)}</div>` : '';
-  return `<div class="wait"><span class="dot"></span><div><b>A IA está montando ${TASK_WHAT[j.aiTask] || j.aiTask}.</b>
-    <div class="empty" id="autoMsg">Verificando a sessão automática…</div>${err}</div></div>
+  return `<div class="wait"><span class="dot"></span><div style="flex:1;min-width:0"><b>A IA está montando ${TASK_WHAT[j.aiTask] || j.aiTask}.</b>
+    <div class="empty" id="autoMsg">Verificando a sessão automática…</div>${err}
+    <div class="prog" id="aiProg" hidden><div class="mono" id="aiMeta"></div><div class="now" id="aiNow"></div><ol id="aiRecent"></ol></div></div></div>
     <details style="margin-top:14px"><summary class="mono">Rodar à mão (se a sessão automática estiver desligada)</summary>
     <pre style="margin-top:10px" id="pr">${esc(prompt)}</pre>
     <div class="row" style="margin-top:10px"><button class="btn sm ghost" id="cp">Copiar comando</button></div></details>`;
 }
+const MODEL_NAME = { 'claude-opus-5-5': 'Opus 5.5', 'claude-sonnet-5-5': 'Sonnet 5.5', 'claude-haiku-5-5': 'Haiku 5.5' };
+const EFFORT_NAME = { low: 'baixo', medium: 'médio', high: 'alto' };
+const modelo = (m, e) => (MODEL_NAME[m] || m || '?') + (e ? ` · esforço ${EFFORT_NAME[e] || e}` : '');
+const dur = (ms) => { const s = Math.max(0, Math.round(ms / 1000)); return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${String(s % 60).padStart(2, '0')} s`; };
+let aiTimer = null;
+function showProg(a) {
+  const box = $('#aiProg'); if (!box) return;
+  const r = a.running, plano = a.plano;
+  if (!r && !plano) { box.hidden = true; return; }
+  box.hidden = false;
+  $('#aiMeta').textContent = r
+    ? `${modelo(r.model, r.effort)} · ${dur(Date.now() - r.since)} · ${r.steps || 0} passo${r.steps === 1 ? '' : 's'}`
+    : `Vai rodar em ${modelo(plano.model, plano.effort)}`;
+  $('#aiNow').textContent = r && r.now ? r.now.texto : '';
+  $('#aiRecent').innerHTML = r ? (r.recent || []).slice(1, 5).map((p) => `<li>${esc(p.texto)}</li>`).join('') : '';
+}
 function wireAuto(j) {
+  clearInterval(aiTimer);
   const m = $('#autoMsg'); if (!m) return;
-  fetch(`/api/jobs/${j.id}/ai`).then((r) => r.json()).then((a) => {
-    if (a.running) m.textContent = 'Uma conversa do Claude foi aberta só para este vídeo e está trabalhando. A tela atualiza sozinha.';
-    else if (a.auto && !a.aiError) { m.textContent = 'Iniciando a conversa do Claude…'; fetch(`/api/jobs/${j.id}/ai`, { method: 'POST' }); }
-    else m.textContent = a.auto ? 'A sessão automática falhou. Dá para tentar de novo ou rodar à mão.' : 'Sessão automática desligada (AUTO_AI=0). Cole o comando abaixo no Claude Code.';
-  }).catch(() => { m.textContent = 'Sem resposta do servidor.'; });
+  let pediu = false;
+  const tick = () => {
+    if (!$('#autoMsg')) { clearInterval(aiTimer); return; }
+    fetch(`/api/jobs/${j.id}/ai`).then((r) => r.json()).then((a) => {
+      const msg = $('#autoMsg'); if (!msg) return;
+      if (a.running) msg.textContent = 'Uma conversa do Claude foi aberta só para este vídeo e está trabalhando. A tela atualiza sozinha.';
+      else if (a.auto && !a.aiError) { msg.textContent = 'Iniciando a conversa do Claude…'; if (!pediu) { pediu = true; fetch(`/api/jobs/${j.id}/ai`, { method: 'POST' }); } }
+      else msg.textContent = a.auto ? 'A sessão automática falhou. Dá para tentar de novo ou rodar à mão.' : 'Sessão automática desligada (AUTO_AI=0). Cole o comando abaixo no Claude Code.';
+      showProg(a);
+    }).catch(() => { const msg = $('#autoMsg'); if (msg) msg.textContent = 'Sem resposta do servidor.'; });
+  };
+  tick();
+  aiTimer = setInterval(tick, 2000);
 }
 function wireCopy() {
   const b = $('#cp'); if (!b) return;
@@ -399,9 +439,23 @@ function viewStills(j, el) {
 }
 
 /* ---------- 05 storyboard (portão 4) ---------- */
+/* o player fica fixo na tela: quando só as sinalizações mudam, redesenha só os quadros (sem recarregar o filme) */
+const playerKey = (j) => [j.id, j.stage, j.aiTask, (j.storyboard || {}).round, ((j.storyboard || {}).frames || []).length].join('|');
 function viewStoryboard(j, el) {
+  const F = (j.storyboard || {}).frames || [];
+  el.innerHTML = `
+    <div class="sec"><span class="mono">Player · arraste a linha do tempo, ←/→ anda um quadro, F sinaliza o momento, M liga a margem de segurança</span>
+      ${F.length ? `<div class="player"><iframe id="plFrame" src="/player/${encodeURIComponent(j.id)}?embed=1" title="Player do filme"></iframe></div>`
+        : '<p class="empty">O player aparece quando o filme do storyboard estiver pronto.</p>'}</div>
+    <div id="sbRest"></div>`;
+  state.plKey = playerKey(j);
+  sbRest(j);
+}
+function sbRest(j) {
+  const el = $('#sbRest');
   const sb = j.storyboard || { frames: [], flags: {} }, F = sb.frames || [], flags = sb.flags || {};
   const marked = Object.keys(flags);
+  const pf = $('#plFrame'); if (pf && pf.contentWindow) pf.contentWindow.postMessage('job', location.origin);
   el.innerHTML = `
     <div class="sec"><span class="mono">Rodada ${sb.round || 1} · ${F.length} quadros · toque num quadro para pedir ajuste</span>
       <div class="sb">${F.map((f) => `

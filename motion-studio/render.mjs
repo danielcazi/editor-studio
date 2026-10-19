@@ -1,6 +1,6 @@
 // node render.mjs <filmDir> [--query layer=bg] [--w 1920 --h 1080] [--frames out/frames] [--sheet out/sheet.png --step 0.5] [--workers 4] [--from 0 --to 45]
 // Renderiza um filme que expõe window.seek(t). Cada quadro é função pura do tempo.
-import { chromium } from 'playwright';
+import { chromium } from './lib/pw.mjs';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
