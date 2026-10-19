@@ -1,0 +1,11 @@
+* { margin: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+:root { --creme: #faf9f5; --sup: #fff; --borda: #e6e3da; --roxo: #6f6fc9; --roxoF: #5857b0; --roxoC: #8f8fdd; --roxoS: #ecebfa;
+  --tinta: #1f1e1d; --tintaS: #55534d; --apag: #7c7a73; --terra: #c4673f; --verde: #2fbf6b; --verm: #e0523a; --noite: #141413; }
+#stage { position: absolute; inset: 0; overflow: hidden; font-family: Inter, sans-serif; color: var(--tinta); -webkit-font-smoothing: antialiased; }
+.abs { position: absolute; }
+.h { font-weight: 800; letter-spacing: -.035em; line-height: .95; white-space: pre; }
+.serif { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; letter-spacing: -.01em; }
+.mono { font-weight: 600; font-variant-numeric: tabular-nums; }
+.card { position: absolute; background: var(--sup); box-shadow: 0 30px 80px -30px rgba(31,30,29,.45), 0 0 0 1px var(--borda); overflow: hidden; }
+.chip { position: absolute; display: inline-flex; align-items: center; gap: 12px; border-radius: 999px; font-weight: 600; white-space: nowrap; }

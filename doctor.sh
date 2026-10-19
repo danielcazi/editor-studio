@@ -16,6 +16,20 @@ CH="${CHROME_PATH:-}"; for c in "$CH" "/Applications/Google Chrome.app/Contents/
 { ls ~/Library/Fonts /Library/Fonts /usr/share/fonts ~/.fonts 2>/dev/null | grep -qi "^Inter" || fc-list 2>/dev/null | grep -qi "Inter"; } && ok "fonte Inter instalada" || av "fonte Inter não instalada (o MP4 usa Google Fonts; o After precisa dela instalada para os textos nativos)"
 [ -f editor-studio/server.js ] && ok "server.js" || no "server.js ausente"
 ls referencias/{edicao,lettering,motion}/*.mp4 >/dev/null 2>&1 && ok "referências na pasta" || av "banco de referências vazio (coloque MP4 em referencias/)"
+echo "Plugin e ferramentas do motion"
+python3 - <<'PY'
+import json, os
+G, R = "\033[32m✓\033[0m", "\033[31m✗\033[0m"
+def ok(c, m): print(f"  {G if c else R} {m}")
+try:
+    pj = json.load(open('.claude-plugin/plugin.json')); ok(True, f"plugin {pj['name']} {pj['version']}")
+    for s in pj.get('skills', []): ok(os.path.isfile(os.path.join(s, 'SKILL.md')), f"skill {s}")
+    ok(os.path.isdir(pj.get('commands', 'commands')), "commands")
+except Exception as e: ok(False, f".claude-plugin/plugin.json: {e}")
+for f in ('motion-studio/lib/pw.mjs', 'motion-studio/lib/build-beats.mjs', 'motion-studio/lib/beat-analyze.mjs', 'motion-studio/lib/beatgrid.js', 'motion-studio/lib/fx.js', 'motion-studio/qa/check.mjs', 'editor-studio/player.html'):
+    ok(os.path.isfile(f), f)
+PY
+if command -v claude >/dev/null 2>&1; then claude plugin validate . >/dev/null 2>&1 && ok "claude plugin validate" || no "claude plugin validate acusou erro (rode: claude plugin validate .)"; fi
 echo "Ferramentas (ferramentas.json)"
 python3 - <<'PY'
 import json, os, shutil

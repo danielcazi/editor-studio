@@ -1,0 +1,12 @@
+{
+  "name": "editor-studio",
+  "owner": { "name": "Daniel Cazi", "url": "https://github.com/danielcazi/editor-studio" },
+  "description": "Editor Studio para o Claude Code.",
+  "plugins": [
+    {
+      "name": "editor-studio",
+      "source": "./",
+      "description": "QA automático de quadros, BeatGrid, efeitos seek-safe, player com scrubbing e biblioteca motion mod para filmes HTML com window.seek(t)."
+    }
+  ]
+}

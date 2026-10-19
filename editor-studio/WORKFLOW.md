@@ -5,11 +5,9 @@ Quando o editor aprova um portão, a interface define `stage` e `aiTask` com a t
 O Claude executa **só essa tarefa**, grava o resultado no `job.json` e zera `aiTask` (`null`).
 A interface atualiza sozinha. Nunca avance de etapa por conta própria: quem muda `stage` é o editor.
 
-**Onde o editor decide:** por padrão, na interface local (`node editor-studio/server.js`, http://localhost:4173), que grava direto no `job.json`.
-Se existir `editor-studio/painel.local.md` (fora do git, um por máquina), o editor decide no painel publicado cujo link está nesse arquivo, e não no localhost:
-O painel guarda cada job no banco do artifact, documento `jobs/<id>` (mesmas chaves do `job.json`; imagens são ids de asset do artifact).
-Quando o editor disser "segue": leia `jobs/<id>` com `ArtifactData get`, copie as escolhas (`refPick`, `timeline`, `stills[].pick`, notas, `storyboard.flags`, `revisionNote`, `stage`, `aiTask`) para o `job.json`, execute a tarefa, suba as imagens novas com `Artifact` (`asset: true`) e grave o resultado de volta no documento (`ArtifactData update` com `if_version`, `aiTask: null`).
-O `editor-studio` local continua sendo o motor e o arquivo de trabalho.
+**Onde o editor decide:** na interface local (`node editor-studio/server.js`, http://localhost:4173). Ela grava direto no `job.json`; não há painel publicado nem banco em nuvem. O Claude lê e escreve só o `job.json` deste job.
+
+Proteções do job (`editor-studio/tools/job_guard.js`): cada execução trava `videos/<id>/.lock` (não rode uma tarefa à mão enquanto o servidor executa a mesma: `job_guard.js status <id>`) e o servidor guarda snapshots do `job.json` em `videos/<id>/.hist/` (`job_guard.js list|restore <id>`).
 
 Fluxo: `envio` (editor) → `refs` → `devolutiva` → `stills` (só se houver peça nova aprovada) → `storyboard` → `video`.
 Em cada portão a IA propõe e o editor aprova, passa ou pede nova rodada (`revisionNote`).
@@ -29,7 +27,7 @@ Regras gerais
 Entrada: `briefing`, repertório do editor, biblioteca, `revisionNote` se houver.
 
 1. Leia o briefing e a legenda; olhe 6 a 10 quadros do vídeo (encaixe `leitura`).
-2. Para cada eixo (`edicao`, `lettering`, `motion`) escolha **3 opções** que façam sentido para este vídeo, vindas do repertório ou da biblioteca. Marque uma como `rec: true` (a sua sugestão).
+2. Para cada eixo (`edicao`, `lettering`, `motion`) escolha **3 opções** que façam sentido para este vídeo, vindas do repertório ou da biblioteca. Marque uma como `rec: true` (a sua sugestão). Antes de escolher, liste **todo** o conteúdo de `referencias/<cat>/` e de `refs.json` (nenhum item pode ficar de fora por falha de leitura) e use só o que existe nesses arquivos.
 3. Cada opção precisa de uma imagem em `out/` (miniatura do módulo, quadro de um vídeo já feito ou still rápido), 4:5 ou 9:16, ~400 px de largura.
 4. Grave:
 ```json
@@ -48,14 +46,25 @@ Entrada: briefing, `refPick` (+ `refOptions`/`refUploads` para saber o que foi e
 { "id": "r4", "at": "0:15", "t": 15.38, "line": "frase exata", "what": "o que entra na tela", "piece": { "kind": "lib", "ref": "M09", "name": "Palavra-chave" }, "status": "ok", "note": "" }
 ```
    `status` começa em `"ok"` (proposta aprovada por padrão); o editor passa o que não quer.
-4. Em nova rodada, mantenha as linhas e notas que o editor não pediu para mudar.
+4. Ritmo obrigatório: o briefing pede **algo novo entrando** a cada 1,5 s. Nenhum intervalo sem entrada pode passar de 1,5 s, do início ao fim. O hook (0 a 1 s) é animado e usa a referência do Meta quando o briefing pedir.
+   Entrar não é tirar o anterior: cada linha diz quanto a peça fica na tela com `hold` (segundos) e que tipo de peça é com `slot` (`"palavra"` = palavra-chave grande, `"painel"` = cartão/painel/UI, `"objeto"` = objeto 3D ou ícone; outro nome vale como peça comum).
+   - `slot: "palavra"` pode durar só até a próxima palavra-chave (mín. 1,2 s).
+   - Todo o resto fica **≥ 3 s** (`hold` ≥ 3). Se a peça serve à fala seguinte, estique para 3 a 4 s e deixe a linha seguinte entrar em outro slot, convivendo com ela.
+   - Duas peças do mesmo slot não se sobrepõem: a nova só entra quando a anterior já cumpriu o mínimo.
+   - Enquanto um painel está na tela, as entradas de 1,5 s podem ser dentro dele (linha que acende, número, chip, clique: linha com `"dentro": "<id do painel>"`, sem slot nem hold) ou um objeto ao lado.
+   - Cortina e flash usam `slot: "transicao"` (contam como entrada e não precisam ficar 3 s).
+   ```json
+   { "id": "r9", "t": 10.5, "line": "...", "what": "...", "slot": "painel", "hold": 4, "piece": { ... } }
+   ```
+   Antes de gravar, rode `node editor-studio/tools/check_timeline.js <id>`: ele confere as entradas (≤ 1,5 s), o `hold` mínimo e o conflito de slots. Acrescente ou estique linhas até ele passar (o servidor roda a mesma conferência ao fim da tarefa e avisa o editor se sobrar problema).
+5. Em nova rodada, mantenha as linhas e notas que o editor não pediu para mudar.
 5. Não gere imagem nem vídeo nesta etapa.
 
 ## Tarefa `stills` (portão 3)
 
 Entrada: linhas da `timeline` com `status: "ok"` e `piece.kind: "new"`, mais as notas.
 
-Para cada uma, desenhe 3 direções realmente diferentes como imagem estática, na referência escolhida, dentro da área segura (9:16: tudo entre y 230 e 1520). Construa cada peça como módulo reutilizável a partir de `motion-studio/library/_template/` (`params.js` com tudo que muda). Grave:
+Para cada uma, desenhe 3 direções realmente diferentes como imagem estática, na referência escolhida, dentro da margem Meta Ads de `motion-studio/qa/safezone.json` (9:16: x 65–1015, y 270–1248). Construa cada peça como módulo reutilizável a partir de `motion-studio/library/_template/` (`params.js` com tudo que muda). Grave:
 ```json
 { "rowId": "r4", "title": "Painel no escuro", "line": "frase", "pick": null, "note": "",
   "options": [ { "key": "A", "name": "Cartões", "desc": "uma linha", "file": "videos/<id>/out/still-r4-A.jpg" } ] }
@@ -66,7 +75,10 @@ Para cada uma, desenhe 3 direções realmente diferentes como imagem estática, 
 Entrada: timeline aprovada, stills escolhidos (`pick`), notas, e `storyboard.flags` quando for uma rodada de ajuste.
 
 1. Monte o filme da edição em `videos/<id>/filme/` (vídeo base; se precisar recortar a pessoa, use o encaixe `recorte` + peças da biblioteca + peças novas com o look escolhido). Anime as peças novas a partir do still escolhido e catalogue-as na biblioteca.
-2. Renderize **um quadro por linha aprovada da timeline**, no momento mais representativo, mais o primeiro e o último quadro. Dê nota ao conjunto (leitura no celular, sobreposição, marca, ritmo) e corrija antes de mostrar.
+   - **Tela cheia:** o vídeo base cobre o quadro inteiro (escala ≥ 1). Variação entre cortes é punch-in (aumentar), nunca reduzir; sem cópia desfocada atrás e sem máscara nas bordas. O recorte da pessoa sai em 1:1 e recebe a mesma escala do vídeo.
+   - **Permanência:** cada peça vive de `t` até `t + hold` da sua linha (não só até a linha seguinte). O filme desenha todas as peças vivas no instante, cada uma na sua área. Exponha `window.SCENES = [{ id, a, b }]` com `b = t + hold`.
+   - **Margem:** tudo dentro de `motion-studio/qa/safezone.json` (padrão Meta Ads: x 65–1015, y 270–1248).
+2. Renderize **um quadro por linha aprovada da timeline**, no momento mais representativo, mais o primeiro e o último quadro. Dê nota ao conjunto (leitura no celular, sobreposição, marca, ritmo) e corrija antes de mostrar. Rode antes de gravar: `node editor-studio/tools/check_safezone.mjs <id>` (texto sobre cabeça/rosto ou fora da área segura, com sugestão de deslocamento), `node editor-studio/tools/check_storyboard.mjs <id>` (texto suspeito como "−0%", NaN, número fora de `dados.json`) e `node editor-studio/tools/check_timeline.js <id>` (ritmo e frases repetidas). Rode também o encaixe `qa` (`ferramentas.json`) nos quadros do storyboard: corrija todo `erro` de `out/qa.json` e cite os `aviso` que ficarem na nota ao editor. Números do filme vêm de `videos/<id>/dados.json` (`node editor-studio/tools/dados.mjs <id> init|build|check`); os que não estão no briefing ficam com `"ilustrativo": true`.
 3. Grave:
 ```json
 "storyboard": { "round": 1, "frames": [ { "id": "r4", "at": "0:17", "t": 17.0, "label": "Painel no escuro", "file": "videos/<id>/out/sb-1-r4.jpg", "w": 1080, "h": 1920 } ], "flags": {} }
@@ -77,11 +89,16 @@ Entrada: timeline aprovada, stills escolhidos (`pick`), notas, e `storyboard.fla
 
 Entrada: storyboard aprovado.
 
+0. Aplique a escolha do editor: lettering e motion seguem exatamente `refPick.lettering` e `refPick.motion` (o estilo da referência escolhida, nunca o padrão do filme). Quando as notas gerais de `referencias/refs.json` (ex.: "Inter 800", "cards planos") conflitarem com a escolha, vale a escolha. Confira no quadro de cada eixo antes de gravar. Mantenha a mudança visual a cada 1,5 s (regra da devolutiva).
 1. Exporte as camadas do filme (vídeo base, palavras-chave, cada peça) em sequências PNG com alfa (encaixe `render` com `--query layer=...`; se houver um vídeo já entregue em `videos/*/filme/ae/`, siga o mesmo formato).
-2. Monte a comp no After Effects por JSX (textos como camadas de texto nativas sempre que possível), salve o `.aep` em `out/` e renderize o MP4. Se o After não estiver disponível, renderize pelo `render.mjs` e avise em `notes`.
-3. Áudio: voz original + trilha (se houver, bem abaixo da voz, com sidechain) + SFX sintetizados, -14 LUFS.
+2. Monte a comp **híbrida** do After Effects com o encaixe `aep` de `ferramentas.json` (`node editor-studio/tools/ae/make_jsx.mjs <id> --aep videos/<id>/out/<nome>.aep`). Antes, exporte as camadas: `node motion-studio/render.mjs videos/<id>/filme --w 1080 --h 1920 --type jpeg --query layer=base --frames videos/<id>/filme/ae/V/base` e o mesmo com `layer=bg|person|gfx` (PNG). O gerador amostra cada cena quadro a quadro e decide peça por peça:
+   - **nativa** (texto e caixas 2D): camadas de texto e shape layers presas a um null com keyframes de posição, escala, rotação e opacidade iguais aos do HTML; sombra vira Drop Shadow. Editável.
+   - **clipe** (3D, gradiente, SVG, filtro ou conteúdo que muda por dentro): ProRes 4444 com alfa em `filme/ae/V/clips/`, idêntico ao MP4.
+   Para isso o filme segue o contrato do cabeçalho de `make_jsx.mjs`: cada peça é um filho direto de `#s-<id>` e anima a si mesma (entrada e saída no próprio elemento); `window.SCENES` com `b = t + hold`. Abra o `ae_report.json` e informe no `notes` quais peças são clipes (e por quê) e as **fontes que faltam** (`fontes_faltando`: o After troca a fonte em silêncio; peça ao editor para instalar antes). Rode o `run.jsx` no After só com autorização do editor (ele abre um projeto novo), salve o `.aep` em `out/` e confira 2 ou 3 quadros com `aerender` contra o MP4. Se o After não estiver disponível, renderize pelo `render.mjs` e avise em `notes`.
+3. Áudio: `node editor-studio/tools/mix_audio.mjs <id> [--trilha f] [--sfx f]` (voz + trilha com sidechain + SFX, dois passes de loudnorm em -14 LUFS; confira o LUFS impresso).
 4. Grave `video`: `{ "status": "done", "file": "videos/<id>/out/final.mp4", "aep": "videos/<id>/out/<nome>.aep", "notes": "o que foi feito e o que checar" }`.
-5. Ajustes pós-entrega chegam em `revisionNote` por minutagem: corrija só aqueles trechos.
+5. Opcional, se o editor pedir: `node editor-studio/tools/export_formats.mjs <id> --formatos 4x5,1x1` (cortes do 9:16) e `node editor-studio/tools/ae/pack_aep.mjs <id> --copy` (projeto do After sem links para outros jobs).
+6. Ajustes pós-entrega chegam em `revisionNote` por minutagem: corrija só aqueles trechos.
 
 ## Rodando
 

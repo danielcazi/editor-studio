@@ -37,3 +37,4 @@ mkdir -p videos referencias/{edicao,lettering,motion}
 node editor-studio/tools/index_refs.mjs >/dev/null 2>&1 && ok "índice do banco de referências"
 echo; bash doctor.sh
 echo; echo "Pronto. Para começar:  bash start.sh   (abre http://localhost:4173)"
+echo "Opcional: usar as skills e ferramentas em outro projeto:  /plugin marketplace add $(pwd)   e   /plugin install editor-studio@editor-studio"

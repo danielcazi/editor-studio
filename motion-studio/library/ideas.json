@@ -53,11 +53,21 @@
       "line": "(sem fala) Desktop · Laptop · Tablet · Celular",
       "catalogCheck": "M06 troca de dispositivo, mas o mockup ocupa 15% da tela e some em 1 beat.",
       "why": "Um morph grande da mesma página nos quatro tamanhos faz a promessa 'automático' ser lida.",
-      "status": "pending",
-      "note": "",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
       "stills": [],
-      "pick": null,
-      "builtAs": null
+      "pick": "A",
+      "builtAs": "M35",
+      "module": "modules/I002-responsive-morph",
+      "kind": "demo de produto",
+      "what": "A mesma página muda de Desktop → Laptop → Tablet → Celular: a moldura se redimensiona, as colunas se reorganizam e o rótulo troca.",
+      "thumbQuery": "look=A&bg=0",
+      "thumbT": 1,
+      "vars": [
+        "steps",
+        "hold",
+        "move"
+      ]
     },
     {
       "id": "I003",
@@ -496,6 +506,419 @@
       "pick": "A",
       "builtAs": "M34",
       "module": "modules/I014-speed-gauge"
+    },
+    {
+      "id": "I015",
+      "title": "Clique que espera a página",
+      "date": "2026-10-16",
+      "source": {
+        "type": "video",
+        "ref": "Ads 04",
+        "at": "0:03",
+        "job": "videos/ads-04"
+      },
+      "line": "O usuário clicou e agora a página precisa abrir rápido para ele ver a oferta.",
+      "catalogCheck": "M33 mostra o resultado (connect rate) e M25 é cronômetro de prompt a página; nenhum mostra o clique do anúncio esperando a página abrir.",
+      "why": "O momento do clique e da espera é o centro do argumento do vídeo.",
+      "status": "stills",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Anúncio → página carregando",
+          "desc": "Sobre o vídeo: cartão do anúncio recebe o clique e, embaixo, o navegador gira com o contador de espera em terracota.",
+          "file": "modules/I015-clique-espera/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Cronômetro no escuro",
+          "desc": "Fundo noite: tempo de espera gigante dentro de um anel que fecha devagar.",
+          "file": "modules/I015-clique-espera/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Duas telas",
+          "desc": "Creme: celular com o anúncio clicado, seta e celular vazio girando com o contador.",
+          "file": "modules/I015-clique-espera/still-C.jpg"
+        }
+      ]
+    },
+    {
+      "id": "I016",
+      "title": "Clique que vira dinheiro perdido",
+      "date": "2026-10-16",
+      "source": {
+        "type": "video",
+        "ref": "Ads 04",
+        "at": "0:22",
+        "job": "videos/ads-04"
+      },
+      "line": "e isso pesa muito mais quando você roda tráfego, porque cada clique custou dinheiro.",
+      "catalogCheck": "M05 só mostra números e M33 só a taxa; nenhum mostra cada clique pago se perdendo antes da página.",
+      "why": "Torna visível o custo do clique que não chega à página.",
+      "status": "stills",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Moedas que não chegam",
+          "desc": "Sobre o vídeo: moedas de cliques pagos caem; as que chegam somam na página e as outras viram terracota e despencam.",
+          "file": "modules/I016-clique-perdido/still-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Cem cliques",
+          "desc": "Fundo noite: grade de 100 pontos, 61 em roxo e 39 em terracota, com − 39% grande.",
+          "file": "modules/I016-clique-perdido/still-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Extrato riscado",
+          "desc": "Creme: recibo de cliques pagos; as linhas que não chegaram são riscadas em terracota.",
+          "file": "modules/I016-clique-perdido/still-C.jpg"
+        }
+      ]
+    },
+    {
+      "id": "I017",
+      "title": "Transições (whip, glitch, círculo)",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "Só existe a M10 (cortina roxa); faltam transições com outro ritmo.",
+      "why": "Overlay com alfa que cobre a tela em [0, mid] e libera depois; a troca de cena acontece sob a cobertura. Looks: A whip, B glitch, C círculo.",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I017-transicoes",
+      "kind": "transição",
+      "what": "Overlay com alfa que cobre a tela em [0, mid] e libera depois; a troca de cena acontece sob a cobertura. Looks: A whip, B glitch, C círculo.",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 0.5,
+      "vars": [
+        "look",
+        "color",
+        "mid",
+        "duration"
+      ],
+      "builtAs": "M36"
+    },
+    {
+      "id": "I018",
+      "title": "Legenda karaokê palavra por palavra",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "Nenhum módulo desenha legenda; o briefing pede \"não escreva legenda simples\".",
+      "why": "Palavras com tempo ({w,s,e}, mesmo formato do transcribe.py) em páginas de poucas palavras; a palavra falando ganha pílula (A) ou cor e pulo (B).",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I018-legenda-karaoke",
+      "kind": "legenda",
+      "what": "Palavras com tempo ({w,s,e}, mesmo formato do transcribe.py) em páginas de poucas palavras; a palavra falando ganha pílula (A) ou cor e pulo (B).",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 1.4,
+      "vars": [
+        "words",
+        "perPage",
+        "active",
+        "accent"
+      ],
+      "builtAs": "M37"
+    },
+    {
+      "id": "I019",
+      "title": "Lettering serifado itálico (l3)",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "M19 usa serifado só no pôr do sol; faltava um título serifado reutilizável sobre qualquer vídeo.",
+      "why": "Letras sobem com desfoque; a palavra de destaque ganha traço desenhado. Instrument Serif itálico, a referência l3 do ads-04.",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I019-lettering-serifado",
+      "kind": "abertura",
+      "what": "Letras sobem com desfoque; a palavra de destaque ganha traço desenhado. Instrument Serif itálico, a referência l3 do ads-04.",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 2,
+      "vars": [
+        "lines",
+        "hi",
+        "size",
+        "ink",
+        "stroke"
+      ],
+      "builtAs": "M38"
+    },
+    {
+      "id": "I020",
+      "title": "Card em perspectiva com realce (m3)",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "M05 e M33 usam cards planos; nenhum tem perspectiva.",
+      "why": "Card inclinado em 3D que endireita, com brilho passando e uma linha destacada em roxo. A referência m3 do ads-04.",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I020-card-perspectiva",
+      "kind": "dado",
+      "what": "Card inclinado em 3D que endireita, com brilho passando e uma linha destacada em roxo. A referência m3 do ads-04.",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 2.2,
+      "vars": [
+        "title",
+        "rows",
+        "hi",
+        "tiltX",
+        "tiltY"
+      ],
+      "builtAs": "M39"
+    },
+    {
+      "id": "I021",
+      "title": "Número slam",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "M05 faz três cards pequenos; nenhum dá ao número o plano inteiro.",
+      "why": "Número gigante conta até o valor, bate com tremida e ganha selo de variação. Lê dados.json quando existir a chave dadoKey.",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I021-numero-slam",
+      "kind": "dado",
+      "what": "Número gigante conta até o valor, bate com tremida e ganha selo de variação. Lê dados.json quando existir a chave dadoKey.",
+      "thumbQuery": "look=A&bg=0",
+      "thumbT": 2,
+      "vars": [
+        "dadoKey",
+        "to",
+        "suffix",
+        "kicker",
+        "delta"
+      ],
+      "builtAs": "M40"
+    },
+    {
+      "id": "I022",
+      "title": "Prova social",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "Nenhum módulo mostra depoimento, avaliação ou conversa de cliente.",
+      "why": "Depoimento (A), estrelas e nota (B) ou conversa de WhatsApp (C), com aviso de exemplo ilustrativo.",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I022-prova-social",
+      "kind": "overlay",
+      "what": "Depoimento (A), estrelas e nota (B) ou conversa de WhatsApp (C), com aviso de exemplo ilustrativo.",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 2.4,
+      "vars": [
+        "quote",
+        "name",
+        "nota",
+        "total",
+        "chat"
+      ],
+      "builtAs": "M41"
+    },
+    {
+      "id": "I023",
+      "title": "Antes e depois com divisor",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "M34 mostra só o \"depois\"; faltava o contraste lado a lado.",
+      "why": "Divisor varre a tela: esquerda \"antes\" (cinza, lento), direita \"depois\" (marca). Looks: A páginas, B números (usa dados.json: speed e speed_antes).",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I023-antes-depois",
+      "kind": "dado",
+      "what": "Divisor varre a tela: esquerda \"antes\" (cinza, lento), direita \"depois\" (marca). Looks: A páginas, B números (usa dados.json: speed e speed_antes).",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 2,
+      "vars": [
+        "antes",
+        "depois",
+        "from",
+        "to"
+      ],
+      "builtAs": "M42"
+    },
+    {
+      "id": "I024",
+      "title": "CTA variável com contagem regressiva",
+      "date": "2026-10-16",
+      "source": {
+        "type": "mod-em-lote",
+        "ref": "sugestão de mods",
+        "at": "",
+        "job": ""
+      },
+      "line": "",
+      "catalogCheck": "M08, M18 e M23 fecham de formas parecidas; cada uma exige copiar e adaptar.",
+      "why": "Fechamento com selo, oferta, botão clicado e contagem opcional (urgency.on). Troca só os textos: cobre M08, M18 e M23.",
+      "status": "built",
+      "note": "Construído em lote a pedido do editor (mod em lote de 16/10/2026), sem rodada de stills; looks documentados em params.js. Revisar e trocar textos/números de exemplo (ilustrativos) antes de usar.",
+      "stills": [],
+      "pick": "A",
+      "module": "modules/I024-cta-variavel",
+      "kind": "fechamento",
+      "what": "Fechamento com selo, oferta, botão clicado e contagem opcional (urgency.on). Troca só os textos: cobre M08, M18 e M23.",
+      "thumbQuery": "look=A",
+      "thumbT": 2.4,
+      "vars": [
+        "headline",
+        "button",
+        "badge",
+        "urgency",
+        "clickAt"
+      ],
+      "builtAs": "M43"
+    },
+    {
+      "id": "I025",
+      "title": "Pilha de plugins",
+      "date": "2026-10-17",
+      "source": {
+        "type": "video",
+        "ref": "video-02",
+        "at": "0:17",
+        "job": "videos/video-02"
+      },
+      "line": "baixando e importando plugins para fazer uma gambiarra",
+      "catalogCheck": "M21 tem cartões flutuando, mas leves e vazios; M15 só quebra-cabeça. Nenhum módulo empilha cartões de plugin caindo para mostrar a gambiarra acumulada.",
+      "why": "Mostra o peso de plugins empilhados no Elementor.",
+      "status": "pending",
+      "note": "",
+      "stills": []
+    },
+    {
+      "id": "I026",
+      "title": "Bloco reaproveitado entre clientes",
+      "date": "2026-10-17",
+      "source": {
+        "type": "video",
+        "ref": "video-02",
+        "at": "0:35",
+        "job": "videos/video-02"
+      },
+      "line": "passam a valer para o próximo cliente",
+      "catalogCheck": "M31 só monta três páginas no editor; M39 lista linhas num card. Nenhum módulo mostra um bloco salvo sendo copiado de um cliente para o outro.",
+      "why": "Torna visível que o bloco salvo vale para o próximo projeto.",
+      "status": "built",
+      "note": "",
+      "stills": [
+        {
+          "key": "A",
+          "name": "Copiar e colar",
+          "desc": "Bloco sai do Cliente A e encaixa no B",
+          "file": "../videos/video-02/out/still-r28-A.jpg"
+        },
+        {
+          "key": "B",
+          "name": "Biblioteca de blocos",
+          "desc": "Painel Meus blocos com chips de clientes",
+          "file": "../videos/video-02/out/still-r28-B.jpg"
+        },
+        {
+          "key": "C",
+          "name": "Três clientes em leque",
+          "desc": "Mesmo bloco em três páginas",
+          "file": "../videos/video-02/out/still-r28-C.jpg"
+        }
+      ],
+      "module": "modules/I026-bloco-reaproveitado",
+      "pick": "B",
+      "kind": "explicação",
+      "what": "Cartão de vidro escuro 'Meus blocos': o bloco salvo (Depoimentos) ganha destaque roxo e aparecem os chips Cliente A e + Cliente B. Looks: A copiar e colar entre páginas, B biblioteca, C o mesmo bloco em três clientes.",
+      "vars": [
+        "title",
+        "hi",
+        "bloco",
+        "clientes",
+        "biblioteca",
+        "selo"
+      ],
+      "thumbQuery": "look=B&bg=1",
+      "thumbT": 2.6,
+      "builtAs": "M44"
+    },
+    {
+      "id": "I027",
+      "title": "Broll de época com tarja",
+      "date": "2026-10-17",
+      "source": {
+        "type": "video",
+        "ref": "video-rd-01",
+        "at": "0:35",
+        "job": "videos/video-rd-01"
+      },
+      "line": "Quer estudar melhor, dormir melhor ou até desenvolver aquele hábito de treinar?",
+      "catalogCheck": "M20 e M21 usam papel e silhueta; M41 é prova social. Nenhum módulo coloca cartões de imagem de arquivo colorida, cada um com tarja de texto, empilhados em áreas da tela (referência motion02-figuras).",
+      "why": "Ilustra cada exemplo falado com uma cena, no estilo de arquivo colorido escolhido pelo editor (m2).",
+      "status": "built",
+      "note": "Usada em 3 linhas (estudar, dormir, treinar). Clipes sem custo; Artlist só com aprovação.",
+      "kind": "overlay",
+      "what": "Cartão de imagem de arquivo colorida com tarja de texto; três cartões em áreas diferentes da tela.",
+      "vars": [
+        "imagem",
+        "tarja",
+        "posição"
+      ],
+      "module": "modules/I027-broll-tarja",
+      "pick": "A",
+      "thumbQuery": "look=A&bg=1",
+      "thumbT": 1.4,
+      "builtAs": "M45"
     }
   ]
 }

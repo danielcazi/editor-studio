@@ -1,0 +1,12 @@
+{
+  "name": "editor-studio",
+  "description": "Editor Studio: ferramentas para filmes HTML com window.seek(t) renderizados no Playwright. Verificação automática dos quadros (título sobre rosto, área segura, números, fonte, frase repetida, batida), grade de batidas e compasso (BeatGrid), efeitos seek-safe (grão, vinheta, cor, desfoque, aberração, vidro), player com scrubbing e a biblioteca motion mod.",
+  "version": "0.1.0",
+  "author": { "name": "Daniel Cazi" },
+  "repository": "https://github.com/danielcazi/editor-studio",
+  "skills": [
+    "./skills/motion-toolkit",
+    "./motion-studio/.claude/skills/motion-mod"
+  ],
+  "commands": "./commands"
+}

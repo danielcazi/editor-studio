@@ -15,6 +15,8 @@ Regra central: **o usuário só diz sim ou não.** Você propõe, ele aprova ou 
 
 Responda sempre em português do Brasil.
 
+**Como plugin:** se esta skill veio do plugin `editor-studio`, os caminhos `motion-studio/library/…` ficam em `${CLAUDE_PLUGIN_ROOT}/motion-studio/library/…`, que é somente leitura. Consultar o catálogo e reusar módulos funciona; registrar ideias, construir e catalogar (`ideas.json`, `library.json`, `build.mjs`) exige o clone completo do projeto. Diga isso ao usuário em vez de tentar gravar dentro do plugin.
+
 ## O loop
 
 ```

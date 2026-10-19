@@ -24,7 +24,7 @@
         "film": "insula-build",
         "w": 1920,
         "h": 1080,
-        "t": 3.0
+        "t": 3
       },
       "uses": [
         "Ínsula Build 45s"
@@ -140,7 +140,7 @@
         "film": "insula-build",
         "w": 1920,
         "h": 1080,
-        "t": 30.0
+        "t": 30
       },
       "uses": [
         "Ínsula Build 45s"
@@ -168,7 +168,7 @@
         "film": "insula-build",
         "w": 1920,
         "h": 1080,
-        "t": 33.0
+        "t": 33
       },
       "uses": [
         "Ínsula Build 45s"
@@ -802,7 +802,7 @@
         "film": "library/modules/I006-tres-paginas",
         "w": 1080,
         "h": 1920,
-        "t": 5.0
+        "t": 5
       },
       "uses": [
         "04 CAZI S-EFX (plano PRO) 0:24"
@@ -1026,6 +1026,525 @@
         "Ads 03 (job ads-03-mvab2akf)"
       ],
       "idea": "I014"
+    },
+    {
+      "id": "M35",
+      "name": "Responsive Morph",
+      "kind": "demo de produto",
+      "style": "Insula UI",
+      "what": "A mesma página muda de Desktop → Laptop → Tablet → Celular: a moldura se redimensiona, as colunas se reorganizam e o rótulo troca.",
+      "vars": [
+        "steps",
+        "hold",
+        "move"
+      ],
+      "source": {
+        "film": "library/modules/I002-responsive-morph",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I002-responsive-morph",
+        "w": 1080,
+        "h": 1920,
+        "t": 1,
+        "query": "look=A&bg=0"
+      },
+      "uses": [],
+      "idea": "I002"
+    },
+    {
+      "id": "M36",
+      "name": "Transições (whip, glitch, círculo)",
+      "kind": "transição",
+      "style": "Insula UI",
+      "what": "Overlay com alfa que cobre a tela em [0, mid] e libera depois; a troca de cena acontece sob a cobertura. Looks: A whip, B glitch, C círculo.",
+      "vars": [
+        "look",
+        "color",
+        "mid",
+        "duration"
+      ],
+      "source": {
+        "film": "library/modules/I017-transicoes",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I017-transicoes",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.5,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I017"
+    },
+    {
+      "id": "M37",
+      "name": "Legenda karaokê palavra por palavra",
+      "kind": "legenda",
+      "style": "Insula UI",
+      "what": "Palavras com tempo ({w,s,e}, mesmo formato do transcribe.py) em páginas de poucas palavras; a palavra falando ganha pílula (A) ou cor e pulo (B).",
+      "vars": [
+        "words",
+        "perPage",
+        "active",
+        "accent"
+      ],
+      "source": {
+        "film": "library/modules/I018-legenda-karaoke",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I018-legenda-karaoke",
+        "w": 1080,
+        "h": 1920,
+        "t": 1.4,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I018"
+    },
+    {
+      "id": "M38",
+      "name": "Lettering serifado itálico (l3)",
+      "kind": "abertura",
+      "style": "Insula UI",
+      "what": "Letras sobem com desfoque; a palavra de destaque ganha traço desenhado. Instrument Serif itálico, a referência l3 do ads-04.",
+      "vars": [
+        "lines",
+        "hi",
+        "size",
+        "ink",
+        "stroke"
+      ],
+      "source": {
+        "film": "library/modules/I019-lettering-serifado",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I019-lettering-serifado",
+        "w": 1080,
+        "h": 1920,
+        "t": 2,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I019"
+    },
+    {
+      "id": "M39",
+      "name": "Card em perspectiva com realce (m3)",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Card inclinado em 3D que endireita, com brilho passando e uma linha destacada em roxo. A referência m3 do ads-04.",
+      "vars": [
+        "title",
+        "rows",
+        "hi",
+        "tiltX",
+        "tiltY"
+      ],
+      "source": {
+        "film": "library/modules/I020-card-perspectiva",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I020-card-perspectiva",
+        "w": 1080,
+        "h": 1920,
+        "t": 2.2,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I020"
+    },
+    {
+      "id": "M40",
+      "name": "Número slam",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Número gigante conta até o valor, bate com tremida e ganha selo de variação. Lê dados.json quando existir a chave dadoKey.",
+      "vars": [
+        "dadoKey",
+        "to",
+        "suffix",
+        "kicker",
+        "delta"
+      ],
+      "source": {
+        "film": "library/modules/I021-numero-slam",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I021-numero-slam",
+        "w": 1080,
+        "h": 1920,
+        "t": 2,
+        "query": "look=A&bg=0"
+      },
+      "uses": [],
+      "idea": "I021"
+    },
+    {
+      "id": "M41",
+      "name": "Prova social",
+      "kind": "overlay",
+      "style": "Insula UI",
+      "what": "Depoimento (A), estrelas e nota (B) ou conversa de WhatsApp (C), com aviso de exemplo ilustrativo.",
+      "vars": [
+        "quote",
+        "name",
+        "nota",
+        "total",
+        "chat"
+      ],
+      "source": {
+        "film": "library/modules/I022-prova-social",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I022-prova-social",
+        "w": 1080,
+        "h": 1920,
+        "t": 2.4,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I022"
+    },
+    {
+      "id": "M42",
+      "name": "Antes e depois com divisor",
+      "kind": "dado",
+      "style": "Insula UI",
+      "what": "Divisor varre a tela: esquerda \"antes\" (cinza, lento), direita \"depois\" (marca). Looks: A páginas, B números (usa dados.json: speed e speed_antes).",
+      "vars": [
+        "antes",
+        "depois",
+        "from",
+        "to"
+      ],
+      "source": {
+        "film": "library/modules/I023-antes-depois",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I023-antes-depois",
+        "w": 1080,
+        "h": 1920,
+        "t": 2,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I023"
+    },
+    {
+      "id": "M43",
+      "name": "CTA variável com contagem regressiva",
+      "kind": "fechamento",
+      "style": "Insula UI",
+      "what": "Fechamento com selo, oferta, botão clicado e contagem opcional (urgency.on). Troca só os textos: cobre M08, M18 e M23.",
+      "vars": [
+        "headline",
+        "button",
+        "badge",
+        "urgency",
+        "clickAt"
+      ],
+      "source": {
+        "film": "library/modules/I024-cta-variavel",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I024-cta-variavel",
+        "w": 1080,
+        "h": 1920,
+        "t": 2.4,
+        "query": "look=A"
+      },
+      "uses": [],
+      "idea": "I024"
+    },
+    {
+      "id": "E01",
+      "name": "Grão de filme",
+      "kind": "efeito",
+      "style": "Acabamento (lib/fx.js)",
+      "what": "Grão novo a cada quadro (semente = nº do quadro), misturado em overlay; resposta por intensidade e tamanho.",
+      "vars": [
+        "fx.grain.strength",
+        "fx.grain.size",
+        "fx.grain.blend"
+      ],
+      "source": {
+        "film": "library/modules/E01-fx-acabamento",
+        "fn": "FX.grain"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "chamar a função FX.* no filme (lib/fx.js)",
+      "overlay": "efeito sobre o conteúdo; a cortina antes/depois é só da demonstração",
+      "thumb": {
+        "film": "library/modules/E01-fx-acabamento",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.85,
+        "query": "look=grain"
+      },
+      "uses": []
+    },
+    {
+      "id": "E02",
+      "name": "Vinheta",
+      "kind": "efeito",
+      "style": "Acabamento (lib/fx.js)",
+      "what": "Escurece as bordas com gradiente radial para puxar o olhar ao centro.",
+      "vars": [
+        "fx.vignette.amount",
+        "fx.vignette.size"
+      ],
+      "source": {
+        "film": "library/modules/E01-fx-acabamento",
+        "fn": "FX.vignette"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "chamar a função FX.* no filme (lib/fx.js)",
+      "overlay": "efeito sobre o conteúdo; a cortina antes/depois é só da demonstração",
+      "thumb": {
+        "film": "library/modules/E01-fx-acabamento",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.85,
+        "query": "look=vignette"
+      },
+      "uses": []
+    },
+    {
+      "id": "E03",
+      "name": "Curvas e cor",
+      "kind": "efeito",
+      "style": "Acabamento (lib/fx.js)",
+      "what": "Contraste, saturação, temperatura e curvas por canal (mestre, R, G, B) num filtro SVG.",
+      "vars": [
+        "fx.grade.contrast",
+        "fx.grade.saturate",
+        "fx.grade.temp",
+        "fx.grade.curves"
+      ],
+      "source": {
+        "film": "library/modules/E01-fx-acabamento",
+        "fn": "FX.grade"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "chamar a função FX.* no filme (lib/fx.js)",
+      "overlay": "efeito sobre o conteúdo; a cortina antes/depois é só da demonstração",
+      "thumb": {
+        "film": "library/modules/E01-fx-acabamento",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.85,
+        "query": "look=grade"
+      },
+      "uses": []
+    },
+    {
+      "id": "E04",
+      "name": "Desfoque direcional",
+      "kind": "efeito",
+      "style": "Acabamento (lib/fx.js)",
+      "what": "Gaussiano com raio por eixo: desfoque de movimento horizontal ou vertical.",
+      "vars": [
+        "fx.blur.x",
+        "fx.blur.y"
+      ],
+      "source": {
+        "film": "library/modules/E01-fx-acabamento",
+        "fn": "FX.blur"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "chamar a função FX.* no filme (lib/fx.js)",
+      "overlay": "efeito sobre o conteúdo; a cortina antes/depois é só da demonstração",
+      "thumb": {
+        "film": "library/modules/E01-fx-acabamento",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.85,
+        "query": "look=blur"
+      },
+      "uses": []
+    },
+    {
+      "id": "E05",
+      "name": "Aberração cromática",
+      "kind": "efeito",
+      "style": "Acabamento (lib/fx.js)",
+      "what": "Canais R e B deslocados em sentidos opostos, com pulso leve.",
+      "vars": [
+        "fx.chroma.amount",
+        "fx.chroma.angle"
+      ],
+      "source": {
+        "film": "library/modules/E01-fx-acabamento",
+        "fn": "FX.chroma"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "chamar a função FX.* no filme (lib/fx.js)",
+      "overlay": "efeito sobre o conteúdo; a cortina antes/depois é só da demonstração",
+      "thumb": {
+        "film": "library/modules/E01-fx-acabamento",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.85,
+        "query": "look=chroma"
+      },
+      "uses": []
+    },
+    {
+      "id": "E06",
+      "name": "Vidro fosco",
+      "kind": "efeito",
+      "style": "Acabamento (lib/fx.js)",
+      "what": "Cartão com backdrop-filter, brilho de borda e sombra sobre o conteúdo.",
+      "vars": [
+        "fx.glass.blur",
+        "fx.glass.tint",
+        "fx.glass.radius",
+        "card"
+      ],
+      "source": {
+        "film": "library/modules/E01-fx-acabamento",
+        "fn": "FX.glass"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "chamar a função FX.* no filme (lib/fx.js)",
+      "overlay": "efeito sobre o conteúdo; a cortina antes/depois é só da demonstração",
+      "thumb": {
+        "film": "library/modules/E01-fx-acabamento",
+        "w": 1080,
+        "h": 1920,
+        "t": 0.85,
+        "query": "look=glass"
+      },
+      "uses": []
+    },
+    {
+      "id": "M44",
+      "name": "Bloco reaproveitado entre clientes",
+      "kind": "explicação",
+      "style": "Insula UI",
+      "what": "Cartão de vidro escuro 'Meus blocos': o bloco salvo (Depoimentos) ganha destaque roxo e aparecem os chips Cliente A e + Cliente B. Looks: A copiar e colar entre páginas, B biblioteca, C o mesmo bloco em três clientes.",
+      "vars": [
+        "title",
+        "hi",
+        "bloco",
+        "clientes",
+        "biblioteca",
+        "selo"
+      ],
+      "source": {
+        "film": "library/modules/I026-bloco-reaproveitado",
+        "fn": "LOOKS.B"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I026-bloco-reaproveitado",
+        "w": 1080,
+        "h": 1920,
+        "t": 2.6,
+        "query": "look=B&bg=1"
+      },
+      "uses": [],
+      "idea": "I026"
+    },
+    {
+      "id": "M45",
+      "name": "Broll de época com tarja",
+      "kind": "overlay",
+      "style": "Insula UI",
+      "what": "Cartão de imagem de arquivo colorida com tarja de texto; três cartões em áreas diferentes da tela.",
+      "vars": [
+        "imagem",
+        "tarja",
+        "posição"
+      ],
+      "source": {
+        "film": "library/modules/I027-broll-tarja",
+        "fn": "LOOKS.A"
+      },
+      "formats": [
+        "9:16"
+      ],
+      "reuse": "parametrizado",
+      "overlay": "render com ?nobg=1 → PNG com alfa",
+      "thumb": {
+        "film": "library/modules/I027-broll-tarja",
+        "w": 1080,
+        "h": 1920,
+        "t": 1.4,
+        "query": "look=A&bg=1"
+      },
+      "uses": [],
+      "idea": "I027"
     }
   ],
   "tools": [
@@ -1058,6 +1577,42 @@
       "name": "Recorte da pessoa",
       "what": "BiRefNet (rembg birefnet-portrait), um worker só; silhuetas por canvas source-in.",
       "source": "memória: cinematic-hook-style"
+    },
+    {
+      "id": "T06",
+      "name": "Kit comum dos módulos novos",
+      "what": "library/_shared/kit.js + kit.css: easings, parâmetros (?p=, ?look=, ?t=), fundo transparente (?bg=1 liga fundo de preview), KIT.dado() para ler dados.json. Usado por M35–M43.",
+      "source": "library/_shared"
+    },
+    {
+      "id": "T07",
+      "name": "Catalogador de módulos",
+      "what": "catalog.mjs varre library/modules/, propõe M## a partir do ideas.json e gera miniaturas/galeria.",
+      "source": "library/catalog.mjs"
+    },
+    {
+      "id": "T08",
+      "name": "Conferidores de qualidade",
+      "what": "check_safezone (texto × cabeça), check_storyboard (texto suspeito, dados.json), check_timeline (ritmo e frases repetidas).",
+      "source": "editor-studio/tools"
+    },
+    {
+      "id": "T09",
+      "name": "Mixagem com trilha",
+      "what": "mix_audio.mjs: voz + trilha com sidechain + SFX, -14 LUFS em dois passes.",
+      "source": "editor-studio/tools/mix_audio.mjs"
+    },
+    {
+      "id": "T10",
+      "name": "Formatos e pacote do After",
+      "what": "export_formats.mjs (4:5, 1:1, 16:9) e ae/pack_aep.mjs (sem links simbólicos).",
+      "source": "editor-studio/tools"
+    },
+    {
+      "id": "T11",
+      "name": "Trava e histórico do job",
+      "what": "job_guard.js: .lock por job e snapshots do job.json em .hist/ (list/restore).",
+      "source": "editor-studio/tools/job_guard.js"
     }
   ]
 }

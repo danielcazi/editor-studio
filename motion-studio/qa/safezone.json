@@ -1,0 +1,12 @@
+{
+  "_leia": "Margem de segurança do 9:16 (1080×1920), fonte única para qa/check.mjs, check_safezone.mjs, stills e a guia do player. Texto, peças de motion e números ficam DENTRO do retângulo. O job escolhe o perfil em briefing.margem; sem ele vale 'padrao'. Valores em pixels do quadro 1080×1920.",
+  "padrao": "meta-ads",
+  "perfis": {
+    "meta-ads": {
+      "nome": "Meta Ads (Reels/Stories)",
+      "fonte": "Guia oficial da Meta para anúncios 9:16: livre 14% no topo, 35% na base e 6% nas laterais.",
+      "w": 1080, "h": 1920,
+      "top": 270, "bottom": 1248, "left": 65, "right": 1015
+    }
+  }
+}
